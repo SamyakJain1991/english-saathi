@@ -243,7 +243,7 @@ let apiKey = localStorage.getItem('es_gemini_key') || '';
 
 function saveKey() {
   const key = document.getElementById('api-key-input').value.trim();
-  if (!key.startsWith('AIza')) {
+  if (key.length < 10) {
     alert('Sahi Gemini API key daalo! "AIza" se shuru hoti hai.');
     return;
   }
