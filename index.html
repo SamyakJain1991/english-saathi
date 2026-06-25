@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EnglishSaathi — AI English Tutor</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -13,7 +14,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      transition: background 0.4s;
     }
+    body.light {
+      background: linear-gradient(135deg, #e0e7ff, #f0f4ff, #fafafa);
+    }
+
+    /* HEADER */
     #header {
       width: 100%; max-width: 720px;
       background: rgba(255,255,255,0.05);
@@ -23,6 +30,10 @@
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 10;
     }
+    body.light #header {
+      background: rgba(255,255,255,0.8);
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
     .logo-area { display: flex; align-items: center; gap: 12px; }
     .logo-icon {
       width: 44px; height: 44px; border-radius: 50%;
@@ -31,7 +42,11 @@
       font-size: 22px; box-shadow: 0 4px 15px rgba(247,151,30,0.4);
     }
     .logo-title { color: #fff; font-weight: 700; font-size: 18px; }
+    body.light .logo-title { color: #1a1a35; }
     .logo-sub { color: #ffd200; font-size: 11px; font-weight: 500; }
+    body.light .logo-sub { color: #f7971e; }
+
+    .header-right { display: flex; align-items: center; gap: 8px; }
     .stats { display: flex; gap: 8px; }
     .stat-box {
       background: rgba(255,210,0,0.1);
@@ -40,6 +55,50 @@
     }
     .stat-num { color: #ffd200; font-size: 13px; font-weight: 700; }
     .stat-label { color: #aaa; font-size: 9px; }
+
+    .icon-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; width: 36px; height: 36px;
+      border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; transition: all 0.2s;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.2); }
+    body.light .icon-btn { color: #1a1a35; background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.12); }
+
+    /* WORD OF THE DAY */
+    #wotd-banner {
+      width: 100%; max-width: 720px;
+      background: linear-gradient(135deg, #1D9E75, #0F6E56);
+      padding: 12px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+    }
+    .wotd-left .wotd-tag { font-size: 9px; color: rgba(255,255,255,0.65); letter-spacing: 1px; text-transform: uppercase; }
+    .wotd-word { font-size: 18px; font-weight: 600; color: #fff; }
+    .wotd-meaning { font-size: 12px; color: rgba(255,255,255,0.85); }
+    .wotd-eg { font-size: 11px; color: rgba(255,255,255,0.6); font-style: italic; margin-top: 2px; }
+
+    /* PROGRESS BAR */
+    #progress-strip {
+      width: 100%; max-width: 720px;
+      background: rgba(255,255,255,0.04);
+      padding: 10px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    body.light #progress-strip { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.07); }
+    .prog-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .prog-label { font-size: 12px; color: rgba(255,255,255,0.6); }
+    body.light .prog-label { color: rgba(0,0,0,0.5); }
+    .prog-xp { font-size: 12px; color: #EF9F27; font-weight: 600; }
+    .prog-track { background: rgba(255,255,255,0.12); border-radius: 99px; height: 5px; overflow: hidden; }
+    body.light .prog-track { background: rgba(0,0,0,0.1); }
+    .prog-fill { background: linear-gradient(90deg, #7F77DD, #AFA9EC); height: 100%; border-radius: 99px; transition: width 0.6s ease; }
+    .streak-dots { display: flex; gap: 5px; margin-top: 7px; }
+    .sdot { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.12); max-width: 40px; }
+    body.light .sdot { background: rgba(0,0,0,0.1); }
+    .sdot.done { background: #1D9E75; }
 
     /* MODE TABS */
     #mode-tabs {
@@ -57,15 +116,32 @@
       color: #ddd; font-size: 12px; cursor: pointer; transition: all 0.2s;
       flex-shrink: 0;
     }
+    body.light .mode-btn { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.12); color: #444; }
     .mode-btn.active, .mode-btn:hover {
       background: linear-gradient(135deg, #f7971e44, #ffd20044);
       border-color: rgba(255,210,0,0.6); color: #ffd200; font-weight: 600;
     }
+    body.light .mode-btn.active, body.light .mode-btn:hover {
+      background: rgba(247,151,30,0.15); color: #c47a0a;
+    }
 
+    /* SPECIAL TABS (progress, badges, roleplay) */
+    .mode-btn.special {
+      background: rgba(127,119,221,0.12);
+      border-color: rgba(127,119,221,0.3);
+      color: #AFA9EC;
+    }
+    .mode-btn.special.active {
+      background: rgba(127,119,221,0.25);
+      border-color: rgba(127,119,221,0.7);
+      color: #7F77DD;
+    }
+
+    /* CHAT */
     #chat {
       width: 100%; max-width: 720px; flex: 1;
       padding: 16px; display: flex; flex-direction: column; gap: 14px;
-      overflow-y: auto; min-height: calc(100vh - 280px);
+      overflow-y: auto; min-height: calc(100vh - 370px);
     }
     .msg-row { display: flex; align-items: flex-end; gap: 8px; }
     .msg-row.user { flex-direction: row-reverse; }
@@ -85,12 +161,14 @@
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.12);
     }
+    body.light .bubble.bot { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #1a1a35; }
     .bubble.user {
       background: linear-gradient(135deg, #667eea, #764ba2);
       border-radius: 18px 18px 4px 18px;
       box-shadow: 0 4px 20px rgba(102,126,234,0.4);
     }
     .bubble strong { color: #ffd200; }
+    body.light .bubble.bot strong { color: #c47a0a; }
     .bubble em { color: #aef; font-style: normal; }
 
     .typing-dots { display: flex; gap: 5px; align-items: center; padding: 4px 0; }
@@ -106,6 +184,7 @@
       30% { transform: translateY(-8px); opacity:1; }
     }
 
+    /* INPUT */
     #input-area {
       width: 100%; max-width: 720px;
       padding: 10px 16px 20px;
@@ -120,8 +199,10 @@
       outline: none; line-height: 1.5; font-family: inherit;
       transition: border 0.2s;
     }
+    body.light #user-input { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.15); color: #1a1a35; }
     #user-input:focus { border-color: rgba(255,210,0,0.6); }
     #user-input::placeholder { color: rgba(255,255,255,0.35); }
+    body.light #user-input::placeholder { color: rgba(0,0,0,0.3); }
     #send-btn {
       width: 48px; height: 48px; border-radius: 50%; border: none;
       background: linear-gradient(135deg, #f7971e, #ffd200);
@@ -131,10 +212,105 @@
       transition: all 0.2s;
     }
     #send-btn:disabled { background: rgba(255,255,255,0.1); box-shadow: none; cursor: not-allowed; }
+    #mic-btn {
+      width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.07);
+      color: #fff; cursor: pointer; font-size: 20px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.2s;
+    }
+    body.light #mic-btn { color: #1a1a35; background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.12); }
+    #mic-btn.recording {
+      background: #D4537E; border-color: #D4537E; color: #fff;
+      animation: pulse 0.8s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(212,83,126,0.5); }
+      50% { box-shadow: 0 0 0 10px rgba(212,83,126,0); }
+    }
+
+    /* SPECIAL SECTIONS */
+    #special-section {
+      display: none;
+      width: 100%; max-width: 720px;
+      padding: 16px;
+      min-height: calc(100vh - 300px);
+      overflow-y: auto;
+    }
+    #special-section.visible { display: block; }
+
+    .sec-title { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 14px; }
+    body.light .sec-title { color: #1a1a35; }
+
+    /* PROGRESS SECTION */
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .stat-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 14px; text-align: center;
+    }
+    body.light .stat-card { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
+    .stat-card .num { font-size: 26px; font-weight: 700; color: #7F77DD; }
+    .stat-card .lbl { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 3px; }
+    body.light .stat-card .lbl { color: rgba(0,0,0,0.4); }
+
+    .skill-row { margin-bottom: 10px; }
+    .skill-label { display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+    body.light .skill-label { color: rgba(0,0,0,0.55); }
+
+    /* BADGES */
+    .badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .badge-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 16px; text-align: center;
+      transition: 0.2s;
+    }
+    body.light .badge-card { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
+    .badge-card.unlocked { border-color: rgba(239,159,39,0.5); }
+    .badge-icon { font-size: 30px; margin-bottom: 7px; }
+    .badge-name { font-size: 13px; font-weight: 600; color: #fff; }
+    body.light .badge-name { color: #1a1a35; }
+    .badge-desc { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 3px; }
+    body.light .badge-desc { color: rgba(0,0,0,0.4); }
+    .badge-card.locked { opacity: 0.4; }
+
+    /* ROLEPLAY */
+    .scenario-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 14px; margin-bottom: 10px;
+      cursor: pointer; transition: 0.2s;
+      display: flex; gap: 14px; align-items: center;
+    }
+    body.light .scenario-card { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
+    .scenario-card:hover { border-color: rgba(127,119,221,0.5); background: rgba(127,119,221,0.08); }
+    .scene-icon {
+      width: 46px; height: 46px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .scene-title { font-size: 14px; font-weight: 600; color: #fff; }
+    body.light .scene-title { color: #1a1a35; }
+    .scene-desc { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+    body.light .scene-desc { color: rgba(0,0,0,0.4); }
+    .scene-tag {
+      display: inline-block; margin-top: 5px; font-size: 10px;
+      background: rgba(127,119,221,0.2); color: #AFA9EC;
+      padding: 2px 9px; border-radius: 99px;
+    }
+
+    /* BAR CHART */
+    .bar-chart { display: flex; gap: 5px; align-items: flex-end; height: 70px; margin-bottom: 16px; }
+    .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+    .bar { width: 100%; border-radius: 4px 4px 0 0; }
+    .bar-day { font-size: 9px; color: rgba(255,255,255,0.4); }
+    body.light .bar-day { color: rgba(0,0,0,0.35); }
   </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div id="header">
   <div class="logo-area">
     <div class="logo-icon">🎓</div>
@@ -143,19 +319,48 @@
       <div class="logo-sub">AI English Tutor • Hindi & Regional Languages</div>
     </div>
   </div>
-  <div class="stats">
-    <div class="stat-box">
-      <div class="stat-num" id="streak-count">🔥 1</div>
-      <div class="stat-label">Streak</div>
+  <div class="header-right">
+    <div class="stats">
+      <div class="stat-box">
+        <div class="stat-num" id="streak-count">🔥 7</div>
+        <div class="stat-label">Streak</div>
+      </div>
+      <div class="stat-box" style="background:rgba(100,200,100,0.1);border-color:rgba(100,200,100,0.3)">
+        <div class="stat-num" id="words-count" style="color:#7fff7f">📚 0</div>
+        <div class="stat-label">Sikha</div>
+      </div>
+      <div class="stat-box" style="background:rgba(100,150,255,0.1);border-color:rgba(100,150,255,0.3)">
+        <div class="stat-num" id="mode-label" style="color:#aef">⭐ 1240</div>
+        <div class="stat-label">XP</div>
+      </div>
     </div>
-    <div class="stat-box" style="background:rgba(100,200,100,0.1);border-color:rgba(100,200,100,0.3)">
-      <div class="stat-num" id="words-count" style="color:#7fff7f">📚 0</div>
-      <div class="stat-label">Sikha</div>
-    </div>
-    <div class="stat-box" style="background:rgba(100,150,255,0.1);border-color:rgba(100,150,255,0.3)">
-      <div class="stat-num" id="mode-label" style="color:#aef">💬 Chat</div>
-      <div class="stat-label">Mode</div>
-    </div>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Dark/Light mode">
+      <i class="ti ti-sun"></i>
+    </button>
+  </div>
+</div>
+
+<!-- WORD OF THE DAY -->
+<div id="wotd-banner">
+  <div class="wotd-left">
+    <div class="wotd-tag">📅 Word of the Day</div>
+    <div class="wotd-word" id="wotd-word">Perseverance</div>
+    <div class="wotd-meaning" id="wotd-meaning">लगातार कोशिश करते रहना, हार न मानना</div>
+    <div class="wotd-eg" id="wotd-eg">"Her perseverance helped her clear the exam."</div>
+  </div>
+</div>
+
+<!-- XP PROGRESS STRIP -->
+<div id="progress-strip">
+  <div class="prog-row">
+    <span class="prog-label"><i class="ti ti-flame" style="color:#EF9F27;font-size:13px;vertical-align:-2px"></i> 7-day streak!</span>
+    <span class="prog-xp">⭐ 1,240 XP — Level 8</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" style="width:62%"></div></div>
+  <div class="streak-dots" style="margin-top:7px">
+    <div class="sdot done"></div><div class="sdot done"></div><div class="sdot done"></div>
+    <div class="sdot done"></div><div class="sdot done"></div><div class="sdot done"></div>
+    <div class="sdot done"></div><div class="sdot"></div><div class="sdot"></div><div class="sdot"></div>
   </div>
 </div>
 
@@ -172,14 +377,95 @@
   <button class="mode-btn" onclick="setMode('email', this)">📧 Email Writing</button>
   <button class="mode-btn" onclick="setMode('pronunciation', this)">🔊 Pronunciation</button>
   <button class="mode-btn" onclick="setMode('quiz', this)">🧠 Quiz</button>
+  <button class="mode-btn special" onclick="showSpecial('progress', this)">📊 Progress</button>
+  <button class="mode-btn special" onclick="showSpecial('badges', this)">🏆 Badges</button>
+  <button class="mode-btn special" onclick="showSpecial('roleplay', this)">🎭 Roleplay</button>
 </div>
 
+<!-- CHAT AREA -->
 <div id="chat"></div>
 
+<!-- SPECIAL SECTION (Progress / Badges / Roleplay) -->
+<div id="special-section">
+
+  <!-- PROGRESS -->
+  <div id="sec-progress" style="display:none">
+    <div class="sec-title">📊 Your Progress</div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="num">247</div><div class="lbl">Words Learned</div></div>
+      <div class="stat-card"><div class="num">38</div><div class="lbl">Lessons Done</div></div>
+      <div class="stat-card"><div class="num" id="streak-big">7</div><div class="lbl">Day Streak</div></div>
+      <div class="stat-card"><div class="num">82%</div><div class="lbl">Accuracy</div></div>
+    </div>
+    <div class="sec-title" style="margin-top:4px">This week</div>
+    <div class="bar-chart">
+      <div class="bar-wrap"><div class="bar" style="height:55%;background:#7F77DD"></div><div class="bar-day">Mon</div></div>
+      <div class="bar-wrap"><div class="bar" style="height:80%;background:#7F77DD"></div><div class="bar-day">Tue</div></div>
+      <div class="bar-wrap"><div class="bar" style="height:45%;background:#7F77DD;opacity:.8"></div><div class="bar-day">Wed</div></div>
+      <div class="bar-wrap"><div class="bar" style="height:100%;background:#7F77DD"></div><div class="bar-day">Thu</div></div>
+      <div class="bar-wrap"><div class="bar" style="height:60%;background:#7F77DD;opacity:.85"></div><div class="bar-day">Fri</div></div>
+      <div class="bar-wrap"><div class="bar" style="height:70%;background:#1D9E75"></div><div class="bar-day">Sat</div></div>
+      <div class="bar-wrap"><div class="bar" style="height:20%;background:rgba(255,255,255,0.15)"></div><div class="bar-day">Sun</div></div>
+    </div>
+    <div class="sec-title">Skill Breakdown</div>
+    <div class="skill-row"><div class="skill-label"><span>Speaking</span><span style="color:#EF9F27">78%</span></div><div class="prog-track"><div class="prog-fill" style="width:78%;background:#EF9F27"></div></div></div>
+    <div class="skill-row"><div class="skill-label"><span>Grammar</span><span style="color:#1D9E75">85%</span></div><div class="prog-track"><div class="prog-fill" style="width:85%;background:#1D9E75"></div></div></div>
+    <div class="skill-row"><div class="skill-label"><span>Vocabulary</span><span style="color:#7F77DD">62%</span></div><div class="prog-track"><div class="prog-fill" style="width:62%"></div></div></div>
+    <div class="skill-row"><div class="skill-label"><span>Reading</span><span style="color:#63A614">91%</span></div><div class="prog-track"><div class="prog-fill" style="width:91%;background:#63A614"></div></div></div>
+  </div>
+
+  <!-- BADGES -->
+  <div id="sec-badges" style="display:none">
+    <div class="sec-title">🏆 Achievements</div>
+    <div class="badge-grid">
+      <div class="badge-card unlocked"><div class="badge-icon">🔥</div><div class="badge-name">7-Day Streak</div><div class="badge-desc">7 din lagatar seekha</div></div>
+      <div class="badge-card unlocked"><div class="badge-icon">📚</div><div class="badge-name">Word Wizard</div><div class="badge-desc">200+ words seekhe</div></div>
+      <div class="badge-card unlocked"><div class="badge-icon">🗣️</div><div class="badge-name">Speaker</div><div class="badge-desc">Pehli baar bola</div></div>
+      <div class="badge-card unlocked"><div class="badge-icon">⭐</div><div class="badge-name">1000 XP Club</div><div class="badge-desc">1000 XP kama liye</div></div>
+      <div class="badge-card locked"><div class="badge-icon">🏆</div><div class="badge-name">30-Day Legend</div><div class="badge-desc">30 din streak chahiye</div></div>
+      <div class="badge-card locked"><div class="badge-icon">🎯</div><div class="badge-name">Perfect Score</div><div class="badge-desc">100% accuracy test</div></div>
+    </div>
+  </div>
+
+  <!-- ROLEPLAY -->
+  <div id="sec-roleplay" style="display:none">
+    <div class="sec-title">🎭 Roleplay Scenarios</div>
+    <div class="scenario-card" onclick="startScenario('job')">
+      <div class="scene-icon" style="background:rgba(127,119,221,0.15)">💼</div>
+      <div><div class="scene-title">Job Interview</div><div class="scene-desc">HR se baat karo, apne aap ko present karo</div><span class="scene-tag">Intermediate</span></div>
+    </div>
+    <div class="scenario-card" onclick="startScenario('doctor')">
+      <div class="scene-icon" style="background:rgba(29,158,117,0.15)">🏥</div>
+      <div><div class="scene-title">Doctor Visit</div><div class="scene-desc">Symptoms explain karo English mein</div><span class="scene-tag">Beginner</span></div>
+    </div>
+    <div class="scenario-card" onclick="startScenario('shopping')">
+      <div class="scene-icon" style="background:rgba(239,159,39,0.15)">🛍️</div>
+      <div><div class="scene-title">Shopping / Bargaining</div><div class="scene-desc">Price negotiate karo, quality poochho</div><span class="scene-tag">Beginner</span></div>
+    </div>
+    <div class="scenario-card" onclick="startScenario('hotel')">
+      <div class="scene-icon" style="background:rgba(212,83,126,0.15)">🏨</div>
+      <div><div class="scene-title">Hotel Check-in</div><div class="scene-desc">Reception pe baat karo, problems batao</div><span class="scene-tag">Intermediate</span></div>
+    </div>
+    <div class="scenario-card" onclick="startScenario('bank')">
+      <div class="scene-icon" style="background:rgba(56,138,221,0.15)">🏦</div>
+      <div><div class="scene-title">Bank / Finance</div><div class="scene-desc">Account open karo, loan ke baare mein poochho</div><span class="scene-tag">Advanced</span></div>
+    </div>
+    <div class="scenario-card" onclick="startScenario('airport')">
+      <div class="scene-icon" style="background:rgba(29,158,117,0.15)">✈️</div>
+      <div><div class="scene-title">Airport / Travel</div><div class="scene-desc">Check-in, boarding, customs mein baat karo</div><span class="scene-tag">Intermediate</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- INPUT AREA -->
 <div id="input-area">
   <textarea id="user-input" rows="2"
     placeholder="Hindi ya English mein likho..."
     onkeydown="handleKey(event)"></textarea>
+  <button id="mic-btn" onclick="toggleMic()" title="Voice input">
+    <i class="ti ti-microphone"></i>
+  </button>
   <button id="send-btn" onclick="sendMessage()">➤</button>
 </div>
 
@@ -193,6 +479,61 @@ const _k = atob(_c);
 let currentMode = 'chat';
 let messages = [];
 let wordsLearned = 0;
+let isRecording = false;
+let recognition = null;
+let isLight = false;
+
+const WORDS = [
+  {word:'Perseverance',meaning:'लगातार कोशिश करते रहना, हार न मानना',eg:'"Her perseverance helped her clear the exam."'},
+  {word:'Articulate',meaning:'अपनी बात clearly express करना',eg:'"He is very articulate in meetings."'},
+  {word:'Diligent',meaning:'मेहनती, लगन से काम करने वाला',eg:'"She is a diligent student."'},
+  {word:'Empathy',meaning:'दूसरों का दर्द समझना',eg:'"Empathy makes you a better leader."'},
+  {word:'Resilient',meaning:'मुश्किलों से जल्दी उबरना',eg:'"Indians are very resilient people."'},
+  {word:'Eloquent',meaning:'बहुत अच्छे तरीके से बोलना',eg:'"She gave an eloquent speech."'},
+  {word:'Integrity',meaning:'ईमानदारी और नैतिकता',eg:'"He is known for his integrity."'}
+];
+const todayWord = WORDS[new Date().getDay() % WORDS.length];
+document.getElementById('wotd-word').textContent = todayWord.word;
+document.getElementById('wotd-meaning').textContent = todayWord.meaning;
+document.getElementById('wotd-eg').textContent = todayWord.eg;
+
+function toggleTheme(){
+  isLight = !isLight;
+  document.body.classList.toggle('light', isLight);
+  document.querySelector('#themeBtn i').className = isLight ? 'ti ti-moon' : 'ti ti-sun';
+}
+
+function toggleMic(){
+  const btn = document.getElementById('mic-btn');
+  if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)){
+    addBotMessage('⚠️ Voice input ke liye Chrome browser use karein!');
+    return;
+  }
+  if(isRecording){
+    recognition && recognition.stop();
+    isRecording = false;
+    btn.classList.remove('recording');
+    btn.querySelector('i').className = 'ti ti-microphone';
+    return;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'en-IN';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.onresult = (e) => {
+    document.getElementById('user-input').value = e.results[0][0].transcript;
+  };
+  recognition.onend = () => {
+    isRecording = false;
+    btn.classList.remove('recording');
+    btn.querySelector('i').className = 'ti ti-microphone';
+  };
+  recognition.start();
+  isRecording = true;
+  btn.classList.add('recording');
+  btn.querySelector('i').className = 'ti ti-microphone-off';
+}
 
 const MODE_PROMPTS = {
   chat: `You are "EnglishSaathi" — a warm, friendly AI English tutor for Indian users. 
@@ -202,6 +543,7 @@ Communicate in Hinglish (Hindi+English mix). Be like an elder sibling who studie
 - Correct mistakes gently: "Achha try! Lekin aise bolenge: [correct]"
 - Use Indian examples: chai, cricket, Bollywood, festivals
 - Keep responses conversational and encouraging
+- Today's word of the day: ${todayWord.word} (${todayWord.meaning}) — mention it naturally if relevant
 - End with a follow-up question or "Ab tum try karo!"`,
 
   lesson: `You are "EnglishSaathi" — a structured English coaching teacher for Indian students.
@@ -320,7 +662,14 @@ Quiz types:
 🎯 LEVEL-WISE: Easy (10 pts), Medium (20 pts), Hard (30 pts)
 Keep score, give hints if stuck, explain correct answers.
 Make it fun like KBC style: "Kya aap confident hain? 😄"
-End with total score and performance feedback.`
+End with total score and performance feedback.`,
+
+  roleplay_job: `You are "EnglishSaathi" doing a Job Interview roleplay. You are the interviewer. Communicate in Hinglish. Ask one interview question at a time. After each answer, give brief feedback: what was good, what to improve, and a better phrasing. Be encouraging. Start with "Tell me about yourself."`,
+  roleplay_doctor: `You are "EnglishSaathi" doing a Doctor Visit roleplay. You are the doctor. Communicate in Hinglish. The user is the patient. Ask about symptoms one by one. After each response, teach them the correct English medical phrases they should use.`,
+  roleplay_shopping: `You are "EnglishSaathi" doing a Shopping roleplay. You are the shopkeeper. Communicate in Hinglish. Help the user practice bargaining, asking about products, and polite conversation. Correct their English naturally in the roleplay.`,
+  roleplay_hotel: `You are "EnglishSaathi" doing a Hotel Check-in roleplay. You are the hotel receptionist. Communicate in Hinglish. Guide the user through the check-in process and teach them relevant English phrases.`,
+  roleplay_bank: `You are "EnglishSaathi" doing a Bank Visit roleplay. You are the bank manager. Communicate in Hinglish. Help the user practice formal banking English — account opening, loan queries, etc.`,
+  roleplay_airport: `You are "EnglishSaathi" doing an Airport roleplay. You are the airline staff. Communicate in Hinglish. Guide the user through check-in, boarding, and customs conversations. Teach travel-related English phrases.`
 };
 
 const MODE_STARTERS = {
@@ -329,12 +678,12 @@ const MODE_STARTERS = {
   vocab: `📝 **Vocabulary Builder mein aapka swagat hai!**\n\nAaj hum **5 powerful English words** sikhenge jo daily life aur office mein kaam aate hain!\n\n**Konse words sikhna chahte ho?**\n1️⃣ Daily life words\n2️⃣ Office/Professional words\n3️⃣ Exam vocabulary (GRE/IELTS style)\n4️⃣ Surprise me!\n\nBatao — shuru karte hain! 🔤`,
   grammar: `✍️ **Grammar Class mein aapka swagat hai!**\n\nGrammar ko main itna easy bana dunga ki aap bolunga — **"yaar itna simple tha!"** 😄\n\n**Kaunsa grammar topic chahiye?**\n1️⃣ Tenses (Present/Past/Future)\n2️⃣ Articles (a, an, the)\n3️⃣ Prepositions\n4️⃣ Active/Passive Voice\n5️⃣ Direct/Indirect Speech\n\nBatao — class shuru! 📚`,
   interview: `🎯 **Interview Preparation Center!**\n\nMain aapka personal interview coach hoon — mock interview karenge aur proper feedback dunga!\n\n**Batao:**\n1️⃣ Konsa interview? (Job/MBA/College admission)\n2️⃣ Fresher ho ya experience hai?\n3️⃣ Kaunsi field? (IT/Finance/Marketing/Other)\n\nYeh batao — mock interview shuru karte hain! 💼`,
-  gd: `🗣️ **Group Discussion Practice!**\n\nMain aapke saath GD practice karunga — points dene ka tarika, language, confidence sab sikhaunga!\n\n**GD topic choose karo:**\n1️⃣ Technology (AI, Social Media)\n2️⃣ Current Affairs (Economy, Politics)\n3️⃣ Abstract Topics (Success, Leadership)\n4️⃣ Case-based (Business scenario)\n\nTopic batao — GD start! 📢`,
-  pi: `👔 **Personal Interview Trainer!**\n\nMBA, college admission ya job ke liye PI practice karein!\n\n**Pehle batao:**\n1️⃣ Kis ke liye practice? (MBA/College/Job)\n2️⃣ Kaunsa college/company?\n3️⃣ Apne baare mein 2 lines batao\n\nShuru karte hain — main interviewer ban jaata hoon! 🎓`,
-  spoken: `🎤 **Spoken English Bootcamp!**\n\nFluent English bolna seekho — bilkul natural tarike se!\n\n**Aaj kya practice karein?**\n1️⃣ 🎭 Roleplay (Office/Travel/Shopping)\n2️⃣ 🗣️ Free conversation practice\n3️⃣ 🔊 Pronunciation fixing\n4️⃣ 💬 Daily use phrases\n\nBatao — conversation shuru! 🚀`,
-  email: `📧 **Email & Business Writing Coach!**\n\nProfessional emails likhna seekho — job application se lekar boss ko mail karna!\n\n**Kaunsa email sikhna hai?**\n1️⃣ Leave application\n2️⃣ Job application\n3️⃣ Follow-up email\n4️⃣ Complaint/Request email\n5️⃣ Apni situation batao — main template dunga\n\nBatao — likhna shuru! ✍️`,
-  pronunciation: `🔊 **Pronunciation Clinic!**\n\nIndians jo common mistakes karte hain — unhe fix karte hain!\n\n**Kaunsa area fix karein?**\n1️⃣ V vs W (very/wery)\n2️⃣ TH sound (this/dis)\n3️⃣ Word stress\n4️⃣ Vowel sounds\n5️⃣ Meri specific word/sentence check karo\n\nBatao — practice start! 👄`,
-  quiz: `🧠 **English Quiz Time — KBC Style!**\n\n"Kya aap confident hain?" 😄\n\n**Quiz type choose karo:**\n1️⃣ Vocabulary Quiz\n2️⃣ Grammar Quiz  \n3️⃣ Translation Challenge\n4️⃣ Mixed (Sabka thoda thoda)\n\n**Difficulty:**\nA) Easy 🟢\nB) Medium 🟡\nC) Hard 🔴\n\nBatao — game shuru! 🎯`
+  gd: `🗣️ **Group Discussion Practice!**\n\n**GD topic choose karo:**\n1️⃣ Technology (AI, Social Media)\n2️⃣ Current Affairs (Economy, Politics)\n3️⃣ Abstract Topics (Success, Leadership)\n4️⃣ Case-based (Business scenario)\n\nTopic batao — GD start! 📢`,
+  pi: `👔 **Personal Interview Trainer!**\n\n**Pehle batao:**\n1️⃣ Kis ke liye practice? (MBA/College/Job)\n2️⃣ Kaunsa college/company?\n3️⃣ Apne baare mein 2 lines batao\n\nShuru karte hain! 🎓`,
+  spoken: `🎤 **Spoken English Bootcamp!**\n\n**Aaj kya practice karein?**\n1️⃣ 🎭 Roleplay (Office/Travel/Shopping)\n2️⃣ 🗣️ Free conversation practice\n3️⃣ 🔊 Pronunciation fixing\n4️⃣ 💬 Daily use phrases\n\nBatao — conversation shuru! 🚀`,
+  email: `📧 **Email & Business Writing Coach!**\n\n**Kaunsa email sikhna hai?**\n1️⃣ Leave application\n2️⃣ Job application\n3️⃣ Follow-up email\n4️⃣ Complaint/Request email\n5️⃣ Apni situation batao\n\nBatao — likhna shuru! ✍️`,
+  pronunciation: `🔊 **Pronunciation Clinic!**\n\n**Kaunsa area fix karein?**\n1️⃣ V vs W (very/wery)\n2️⃣ TH sound (this/dis)\n3️⃣ Word stress\n4️⃣ Vowel sounds\n5️⃣ Meri specific word check karo\n\nBatao — practice start! 👄`,
+  quiz: `🧠 **English Quiz Time — KBC Style!**\n\n"Kya aap confident hain?" 😄\n\n**Quiz type choose karo:**\n1️⃣ Vocabulary Quiz\n2️⃣ Grammar Quiz  \n3️⃣ Translation Challenge\n4️⃣ Mixed\n\n**Difficulty:**\nA) Easy 🟢  B) Medium 🟡  C) Hard 🔴\n\nBatao — game shuru! 🎯`
 };
 
 function setMode(mode, btn) {
@@ -343,8 +692,41 @@ function setMode(mode, btn) {
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('chat').innerHTML = '';
+  document.getElementById('chat').style.display = 'flex';
+  document.getElementById('input-area').style.display = 'flex';
+  document.getElementById('special-section').classList.remove('visible');
+  document.getElementById('special-section').querySelectorAll('[id^="sec-"]').forEach(s => s.style.display='none');
   document.getElementById('mode-label').textContent = btn.textContent.trim().substring(0, 8);
   addBotMessage(MODE_STARTERS[mode]);
+}
+
+function showSpecial(name, btn) {
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('chat').style.display = 'none';
+  document.getElementById('input-area').style.display = 'none';
+  document.getElementById('special-section').classList.add('visible');
+  document.getElementById('special-section').querySelectorAll('[id^="sec-"]').forEach(s => s.style.display='none');
+  document.getElementById('sec-'+name).style.display = 'block';
+}
+
+function startScenario(type) {
+  const starters = {
+    job: `🎭 **Roleplay: Job Interview!**\n\nMain interviewer hoon. Aap candidate hain.\n\nLet's begin!\n\n**"Please tell me about yourself."**`,
+    doctor: `🎭 **Roleplay: Doctor Visit!**\n\nMain doctor hoon. Aap patient hain.\n\n**"Good morning! What brings you here today? Please describe your problem."**`,
+    shopping: `🎭 **Roleplay: Shopping!**\n\nMain shopkeeper hoon.\n\n**"Welcome! How can I help you? What are you looking for today?"**`,
+    hotel: `🎭 **Roleplay: Hotel Check-in!**\n\nMain receptionist hoon.\n\n**"Good evening! Welcome to our hotel. Do you have a reservation?"**`,
+    bank: `🎭 **Roleplay: Bank Visit!**\n\nMain bank manager hoon.\n\n**"Good morning! Please have a seat. How can I assist you today?"**`,
+    airport: `🎭 **Roleplay: Airport Check-in!**\n\nMain airline staff hoon.\n\n**"Good morning! May I see your passport and ticket please?"**`
+  };
+  currentMode = 'roleplay_' + type;
+  messages = [];
+  document.getElementById('chat').innerHTML = '';
+  document.getElementById('chat').style.display = 'flex';
+  document.getElementById('input-area').style.display = 'flex';
+  document.getElementById('special-section').classList.remove('visible');
+  document.getElementById('special-section').querySelectorAll('[id^="sec-"]').forEach(s => s.style.display='none');
+  addBotMessage(starters[type]);
 }
 
 function formatText(text) {
