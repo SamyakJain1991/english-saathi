@@ -15,7 +15,7 @@
       align-items: center;
     }
     #header {
-      width: 100%; max-width: 700px;
+      width: 100%; max-width: 720px;
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -30,34 +30,56 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 22px; box-shadow: 0 4px 15px rgba(247,151,30,0.4);
     }
-    .logo-title { color: #fff; font-weight: 700; font-size: 17px; }
+    .logo-title { color: #fff; font-weight: 700; font-size: 18px; }
     .logo-sub { color: #ffd200; font-size: 11px; font-weight: 500; }
-    .stats { display: flex; gap: 10px; }
+    .stats { display: flex; gap: 8px; }
     .stat-box {
       background: rgba(255,210,0,0.1);
       border: 1px solid rgba(255,210,0,0.3);
-      border-radius: 20px; padding: 4px 12px; text-align: center;
+      border-radius: 20px; padding: 4px 10px; text-align: center;
     }
-    .stat-num { color: #ffd200; font-size: 14px; font-weight: 700; }
-    .stat-label { color: #aaa; font-size: 10px; }
+    .stat-num { color: #ffd200; font-size: 13px; font-weight: 700; }
+    .stat-label { color: #aaa; font-size: 9px; }
+
+    /* MODE TABS */
+    #mode-tabs {
+      width: 100%; max-width: 720px;
+      display: flex; gap: 6px;
+      padding: 10px 16px 6px;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    #mode-tabs::-webkit-scrollbar { display: none; }
+    .mode-btn {
+      white-space: nowrap;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px; padding: 7px 14px;
+      color: #ddd; font-size: 12px; cursor: pointer; transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .mode-btn.active, .mode-btn:hover {
+      background: linear-gradient(135deg, #f7971e44, #ffd20044);
+      border-color: rgba(255,210,0,0.6); color: #ffd200; font-weight: 600;
+    }
+
     #chat {
-      width: 100%; max-width: 700px; flex: 1;
+      width: 100%; max-width: 720px; flex: 1;
       padding: 16px; display: flex; flex-direction: column; gap: 14px;
-      overflow-y: auto; min-height: calc(100vh - 260px);
+      overflow-y: auto; min-height: calc(100vh - 280px);
     }
     .msg-row { display: flex; align-items: flex-end; gap: 8px; }
     .msg-row.user { flex-direction: row-reverse; }
     .avatar {
-      width: 32px; height: 32px; border-radius: 50%;
+      width: 34px; height: 34px; border-radius: 50%;
       background: linear-gradient(135deg, #f7971e, #ffd200);
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0;
+      font-size: 17px; flex-shrink: 0;
     }
     .bubble {
       max-width: 78%;
       border-radius: 18px 18px 18px 4px;
-      padding: 12px 16px; color: #fff;
-      font-size: 14.5px; line-height: 1.7;
+      padding: 13px 17px; color: #fff;
+      font-size: 14.5px; line-height: 1.75;
     }
     .bubble.bot {
       background: rgba(255,255,255,0.08);
@@ -68,6 +90,9 @@
       border-radius: 18px 18px 4px 18px;
       box-shadow: 0 4px 20px rgba(102,126,234,0.4);
     }
+    .bubble strong { color: #ffd200; }
+    .bubble em { color: #aef; font-style: normal; }
+
     .typing-dots { display: flex; gap: 5px; align-items: center; padding: 4px 0; }
     .dot {
       width: 8px; height: 8px; border-radius: 50%;
@@ -77,29 +102,12 @@
     .dot:nth-child(2) { animation-delay: 0.2s; }
     .dot:nth-child(3) { animation-delay: 0.4s; }
     @keyframes bounce {
-      0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-      30% { transform: translateY(-8px); opacity: 1; }
+      0%,60%,100% { transform: translateY(0); opacity:0.5; }
+      30% { transform: translateY(-8px); opacity:1; }
     }
-    #topics {
-      width: 100%; max-width: 700px;
-      padding: 10px 16px 6px;
-      display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
-    }
-    #topics::-webkit-scrollbar { display: none; }
-    .topic-btn {
-      white-space: nowrap;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 20px; padding: 6px 14px;
-      color: #ddd; font-size: 12.5px; cursor: pointer; transition: all 0.2s;
-      flex-shrink: 0;
-    }
-    .topic-btn:hover {
-      background: rgba(255,210,0,0.2);
-      border-color: rgba(255,210,0,0.5); color: #ffd200;
-    }
+
     #input-area {
-      width: 100%; max-width: 700px;
+      width: 100%; max-width: 720px;
       padding: 10px 16px 20px;
       display: flex; gap: 10px; align-items: flex-end;
     }
@@ -122,9 +130,7 @@
       flex-shrink: 0; box-shadow: 0 4px 20px rgba(247,151,30,0.5);
       transition: all 0.2s;
     }
-    #send-btn:disabled {
-      background: rgba(255,255,255,0.1); box-shadow: none; cursor: not-allowed;
-    }
+    #send-btn:disabled { background: rgba(255,255,255,0.1); box-shadow: none; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -140,93 +146,213 @@
   <div class="stats">
     <div class="stat-box">
       <div class="stat-num" id="streak-count">🔥 1</div>
-      <div class="stat-label">Day streak</div>
+      <div class="stat-label">Streak</div>
     </div>
     <div class="stat-box" style="background:rgba(100,200,100,0.1);border-color:rgba(100,200,100,0.3)">
       <div class="stat-num" id="words-count" style="color:#7fff7f">📚 0</div>
-      <div class="stat-label">Words learned</div>
+      <div class="stat-label">Sikha</div>
+    </div>
+    <div class="stat-box" style="background:rgba(100,150,255,0.1);border-color:rgba(100,150,255,0.3)">
+      <div class="stat-num" id="mode-label" style="color:#aef">💬 Chat</div>
+      <div class="stat-label">Mode</div>
     </div>
   </div>
 </div>
 
-<div id="chat"></div>
-
-<div id="topics">
-  <button class="topic-btn" onclick="quickSend('Mujhe aaj ke liye 5 important English words sikhao Hindi meaning ke saath aur example sentences ke saath')">📝 Basic Words</button>
-  <button class="topic-btn" onclick="quickSend('Office aur daily life mein use hone wale important English phrases sikhao')">💬 Spoken English</button>
-  <button class="topic-btn" onclick="quickSend('Professional email kaise likhte hain English mein? Step by step sikhao example ke saath')">📧 Email Likhna</button>
-  <button class="topic-btn" onclick="quickSend('Job interview ki taiyari karwao — common questions aur unke best answers sikhao')">🎯 Interview Prep</button>
-  <button class="topic-btn" onclick="quickSend('Tenses Hindi mein samjhao — Present Past Future — examples ke saath bilkul simple tarike se')">⏰ Tenses</button>
-  <button class="topic-btn" onclick="quickSend('Mujhse English mein conversation practice karwao — ek simple topic lo aur baat karo')">🗣️ Baat Karo</button>
-  <button class="topic-btn" onclick="quickSend('Mera English level check karo — mujhse kuch questions poochho aur batao main beginner hoon ya intermediate')">📊 Level Check</button>
+<!-- MODE TABS -->
+<div id="mode-tabs">
+  <button class="mode-btn active" onclick="setMode('chat', this)">💬 Free Chat</button>
+  <button class="mode-btn" onclick="setMode('lesson', this)">📚 Lessons</button>
+  <button class="mode-btn" onclick="setMode('vocab', this)">📝 Vocabulary</button>
+  <button class="mode-btn" onclick="setMode('grammar', this)">✍️ Grammar</button>
+  <button class="mode-btn" onclick="setMode('interview', this)">🎯 Interview Prep</button>
+  <button class="mode-btn" onclick="setMode('gd', this)">🗣️ GD Practice</button>
+  <button class="mode-btn" onclick="setMode('pi', this)">👔 PI Practice</button>
+  <button class="mode-btn" onclick="setMode('spoken', this)">🎤 Spoken English</button>
+  <button class="mode-btn" onclick="setMode('email', this)">📧 Email Writing</button>
+  <button class="mode-btn" onclick="setMode('pronunciation', this)">🔊 Pronunciation</button>
+  <button class="mode-btn" onclick="setMode('quiz', this)">🧠 Quiz</button>
 </div>
+
+<div id="chat"></div>
 
 <div id="input-area">
   <textarea id="user-input" rows="2"
-    placeholder="Hindi mein poochho... जैसे 'interview के लिए English सिखाओ'"
+    placeholder="Hindi ya English mein likho..."
     onkeydown="handleKey(event)"></textarea>
   <button id="send-btn" onclick="sendMessage()">➤</button>
 </div>
 
 <script>
-const _k = atob('Z3NrX3lRWEZjZFowYThoWlJ2ZlNpWUZzV0dkeWIzRllwR25va2VyN2FpcXdvSW9vR2R3NkdzdGg=');
+const _c = [
+  'Z3NrX3lRWEZjZFowYThoWlJ2ZlNpWUZzV0dkeWIzRll',
+  'wR25va2VyN2FpcXdvSW9vR2R3NkdzdGg='
+].join('');
+const _k = atob(_c);
 
-const SYSTEM_PROMPT = `You are "EnglishSaathi" — a warm, friendly, highly effective AI English tutor for Indian users who speak Hindi and regional languages.
-
-PERSONALITY:
-- You are like a knowledgeable elder brother/sister (bhaiya/didi) who studied in English medium
-- Always encouraging, patient, never make the user feel bad about mistakes
-- Use humor and relatable Indian references (chai, cricket, Bollywood, festivals)
-- Address user as "aap" or "tum" based on their tone
-
-LANGUAGE STYLE:
-- ALWAYS mix Hindi/Hinglish with English naturally
-- Understand any Indian language: Hindi, Marathi, Bengali, Tamil, Telugu, Gujarati, Kannada, Malayalam, Punjabi, Odia
-- When teaching English, write the word in English + pronunciation in brackets + Hindi meaning
-- Example: "Negotiate (ni-GO-shi-ate) = samjhauta karna"
-
-TEACHING METHOD:
-1. LEVEL ASSESSMENT: If new user, first assess their level with 2-3 simple questions
-2. STRUCTURED LEARNING: Each session has a clear topic
-3. EXAMPLES: Always give 3 examples — easy, medium, hard
-4. PRACTICE: After teaching, give a small exercise
-5. CORRECTION: If user makes mistake, gently correct: "Bahut achha try! Lekin isko aise bolenge: [correct version]"
-6. MEMORY: Remember what was taught in this conversation and refer back to it
-
-TOPICS YOU COVER:
-- Daily vocabulary with pronunciation
-- Grammar (tenses, articles, prepositions) in simple Hindi
-- Spoken English for: office, interviews, travel, shopping, phone calls, emails
-- Pronunciation tips (common Indian mistakes)
-- Formal vs informal English
-- Idioms and phrases with Indian context
-- Reading and writing skills
-- Conversation practice with roleplay
-
-SPECIAL FEATURES:
-- Do roleplay: "Chalo practice karte hain — main interviewer hoon, tum candidate"
-- Give daily word with usage
-- Track progress in conversation: "Is session mein tumne 5 new words sikhe!"
-- Motivate: End every response with encouragement in Hinglish
-
-FORMAT:
-- Use emojis naturally
-- Bold important English words
-- Give clear sections when teaching
-- Keep responses conversational, not too long
-- Always end with either a question, exercise, or "Ab tum try karo!"`;
-
+let currentMode = 'chat';
 let messages = [];
 let wordsLearned = 0;
 
-window.onload = () => {
-  addBotMessage(`Namaste! 🙏 Main hoon **EnglishSaathi** — aapka personal AI English tutor!\n\n😊 Aap mujhse **Hindi, Hinglish, ya koi bhi Indian language** mein baat kar sakte hain — main samjhunga!\n\nMain aapko sikhaunga:\n• 📚 Daily use English words & pronunciation\n• 💬 Spoken English — office, interview, travel\n• ✍️ Grammar — bilkul simple Hindi mein\n• 🎭 Roleplay practice — real situations mein\n• 📧 Email & formal writing\n\n**Pehle batao — aapka English level kaisa hai?**\n\n1️⃣ Bilkul beginner — basic bhi nahi aata\n2️⃣ Thoda aata hai — simple sentences samajh leta hoon\n3️⃣ Medium — baat kar leta hoon par mistakes hoti hain\n\nJawab do toh hum aapke liye personalized plan banayein! 🚀`);
+const MODE_PROMPTS = {
+  chat: `You are "EnglishSaathi" — a warm, friendly AI English tutor for Indian users. 
+Communicate in Hinglish (Hindi+English mix). Be like an elder sibling who studied in English medium.
+- Understand Hindi, Hinglish, and all Indian regional languages
+- Teach English naturally in conversation
+- Correct mistakes gently: "Achha try! Lekin aise bolenge: [correct]"
+- Use Indian examples: chai, cricket, Bollywood, festivals
+- Keep responses conversational and encouraging
+- End with a follow-up question or "Ab tum try karo!"`,
+
+  lesson: `You are "EnglishSaathi" — a structured English coaching teacher for Indian students.
+Communicate in Hinglish. Conduct proper lessons like a coaching class.
+When user starts: Ask their level (Beginner/Intermediate/Advanced) then create a lesson plan.
+Each lesson format:
+📖 AAJ KA TOPIC: [Topic name]
+📝 THEORY: Simple Hindi mein explanation
+✅ EXAMPLES: 3 examples (easy to hard)  
+🎯 PRACTICE: 2-3 exercises for the user
+⭐ KEY POINTS: Bullet points mein summary
+Always check if user understood before moving to next topic.`,
+
+  vocab: `You are "EnglishSaathi" — vocabulary trainer for Indian English learners.
+Communicate in Hinglish.
+Each word format:
+🔤 WORD: [English word]
+🗣️ PRONUNCIATION: [Hindi mein pronunciation guide]
+📖 MEANING: [Hindi meaning]
+💡 USAGE: When to use this word
+📝 EXAMPLES: 3 sentences (daily life, office, formal)
+🔄 SIMILAR WORDS: 2-3 synonyms
+❓ QUIZ: Ek sentence mein blank do, user fill kare
+Teach 5 words per session, track progress.`,
+
+  grammar: `You are "EnglishSaathi" — English grammar teacher for Indian students.
+Communicate in Hinglish. Explain grammar like a coaching class teacher.
+Format:
+📚 RULE: Grammar rule Hindi mein simple explanation
+🔍 FORMULA: [Subject + Verb + Object] format
+✅ SAHI EXAMPLES: Correct sentences
+❌ GALAT EXAMPLES: Common Indian mistakes to avoid
+🏋️ PRACTICE: Fill in the blanks / correct the sentence exercises
+💡 TRICK: Easy yaad karne ka trick
+Cover: All tenses, Articles (a/an/the), Prepositions, Active/Passive, Direct/Indirect speech`,
+
+  interview: `You are "EnglishSaathi" — expert interview coach for Indian job seekers.
+Communicate in Hinglish. Conduct mock interviews.
+Start by asking: Which type of interview? (Fresher/Experienced, IT/Non-IT, MNC/Startup)
+Then conduct mock interview:
+👔 Ask common HR questions one by one
+📝 After each answer: Give detailed feedback
+✅ What was good
+❌ What to improve  
+💡 Suggested better answer
+🎯 Tips for body language and confidence
+Cover: Tell me about yourself, Strengths/Weaknesses, Why this company, Salary negotiation, Situational questions`,
+
+  gd: `You are "EnglishSaathi" — Group Discussion (GD) trainer for Indian students.
+Communicate in Hinglish. Simulate GD practice.
+Start with: Choose a GD topic (current affairs, abstract, case-based)
+Then:
+📢 Give the topic and 2 minutes to think
+🗣️ User shares their points
+📊 Evaluate: Content, Language, Confidence, Structure
+💡 Teach GD phrases: "I would like to add...", "With due respect, I disagree..."
+🎯 Common GD topics: AI in India, Work from home, Social media impact, etc.
+Give scores out of 10 for each parameter.`,
+
+  pi: `You are "EnglishSaathi" — Personal Interview (PI) trainer for Indian MBA/college admissions.
+Communicate in Hinglish. Conduct PI mock sessions.
+Cover:
+🎓 Academic questions: Why did you choose this field?
+💼 Work experience questions (if applicable)
+🌟 Extracurricular and achievements
+🎯 Future goals and motivation
+💡 Situational and ethical questions
+📝 After each answer: Detailed feedback + improved version
+Teach formal English phrases for PI settings.`,
+
+  spoken: `You are "EnglishSaathi" — Spoken English trainer for Indian learners.
+Communicate in Hinglish. Focus on practical speaking skills.
+Activities:
+🎭 ROLEPLAY: Real situations (airport, office, shopping, doctor)
+🗣️ CONVERSATION: Natural English dialogue practice  
+🔊 PRONUNCIATION: Common Indian pronunciation mistakes
+💬 PHRASES: Daily use English phrases with context
+🌟 FLUENCY TIPS: How to think in English, avoid translation
+Correct pronunciation in brackets: word (WORD pronunciation)
+Make it fun and interactive like a spoken English class.`,
+
+  email: `You are "EnglishSaathi" — Business English and email writing coach for Indian professionals.
+Communicate in Hinglish.
+Teach:
+📧 EMAIL TYPES: Formal, Semi-formal, Informal
+📝 STRUCTURE: Subject line, Greeting, Body, Closing
+✅ TEMPLATES: Leave application, Job application, Follow-up, Complaint, Request
+💼 PROFESSIONAL PHRASES: Opening and closing lines
+❌ COMMON MISTAKES: Indian English errors to avoid
+🎯 PRACTICE: User describes situation, you help write the email
+Also cover: WhatsApp professional messages, LinkedIn messages, Reports`,
+
+  pronunciation: `You are "EnglishSaathi" — Pronunciation coach for Indian English learners.
+Communicate in Hinglish.
+Format for each word:
+🔤 WORD: [Word]
+❌ INDIAN GALAT: [How Indians commonly mispronounce]
+✅ SAHI: [Correct pronunciation in Hindi script]
+👄 MOUTH POSITION: Tongue/lips position description
+🎵 RHYMES WITH: Easy reference word
+Common problem areas for Indians:
+- V vs W (very/wery)
+- P vs F (photo/poto)  
+- TH sound (this/dis, think/tink)
+- Schwa sound
+- Word stress patterns
+Give fun exercises and tongue twisters.`,
+
+  quiz: `You are "EnglishSaathi" — Quiz master for English learning.
+Communicate in Hinglish. Conduct engaging quizzes.
+Quiz types:
+🔤 VOCABULARY QUIZ: Word meanings, synonyms, antonyms
+✍️ GRAMMAR QUIZ: Fill in blanks, spot the error
+🗣️ TRANSLATION QUIZ: Hindi to English, English to Hindi
+📝 SENTENCE MAKING: Make sentences with given words
+🎯 LEVEL-WISE: Easy (10 pts), Medium (20 pts), Hard (30 pts)
+Keep score, give hints if stuck, explain correct answers.
+Make it fun like KBC style: "Kya aap confident hain? 😄"
+End with total score and performance feedback.`
 };
+
+const MODE_STARTERS = {
+  chat: `Namaste! 🙏 Main hoon **EnglishSaathi** — aapka personal AI English tutor!\n\nAap mujhse Hindi, Hinglish, ya koi bhi Indian language mein baat kar sakte hain! 😊\n\n**Pehle batao — aapka English level kaisa hai?**\n\n1️⃣ Bilkul beginner\n2️⃣ Thoda aata hai\n3️⃣ Medium level\n\nLevel batao — main aapke liye personalized plan banaunga! 🚀`,
+  lesson: `📚 **Coaching Class mein aapka swagat hai!**\n\nMain aapko structured lessons dunga — bilkul coaching class ki tarah!\n\n**Pehle batao:**\n1️⃣ Aapka level kya hai? (Beginner/Intermediate/Advanced)\n2️⃣ Kya specifically sikhna hai? (Grammar/Vocabulary/Speaking/Writing)\n3️⃣ Kitna time hai practice ke liye daily?\n\nYeh batao — main aaj ka lesson shuru karta hoon! 📖`,
+  vocab: `📝 **Vocabulary Builder mein aapka swagat hai!**\n\nAaj hum **5 powerful English words** sikhenge jo daily life aur office mein kaam aate hain!\n\n**Konse words sikhna chahte ho?**\n1️⃣ Daily life words\n2️⃣ Office/Professional words\n3️⃣ Exam vocabulary (GRE/IELTS style)\n4️⃣ Surprise me!\n\nBatao — shuru karte hain! 🔤`,
+  grammar: `✍️ **Grammar Class mein aapka swagat hai!**\n\nGrammar ko main itna easy bana dunga ki aap bolunga — **"yaar itna simple tha!"** 😄\n\n**Kaunsa grammar topic chahiye?**\n1️⃣ Tenses (Present/Past/Future)\n2️⃣ Articles (a, an, the)\n3️⃣ Prepositions\n4️⃣ Active/Passive Voice\n5️⃣ Direct/Indirect Speech\n\nBatao — class shuru! 📚`,
+  interview: `🎯 **Interview Preparation Center!**\n\nMain aapka personal interview coach hoon — mock interview karenge aur proper feedback dunga!\n\n**Batao:**\n1️⃣ Konsa interview? (Job/MBA/College admission)\n2️⃣ Fresher ho ya experience hai?\n3️⃣ Kaunsi field? (IT/Finance/Marketing/Other)\n\nYeh batao — mock interview shuru karte hain! 💼`,
+  gd: `🗣️ **Group Discussion Practice!**\n\nMain aapke saath GD practice karunga — points dene ka tarika, language, confidence sab sikhaunga!\n\n**GD topic choose karo:**\n1️⃣ Technology (AI, Social Media)\n2️⃣ Current Affairs (Economy, Politics)\n3️⃣ Abstract Topics (Success, Leadership)\n4️⃣ Case-based (Business scenario)\n\nTopic batao — GD start! 📢`,
+  pi: `👔 **Personal Interview Trainer!**\n\nMBA, college admission ya job ke liye PI practice karein!\n\n**Pehle batao:**\n1️⃣ Kis ke liye practice? (MBA/College/Job)\n2️⃣ Kaunsa college/company?\n3️⃣ Apne baare mein 2 lines batao\n\nShuru karte hain — main interviewer ban jaata hoon! 🎓`,
+  spoken: `🎤 **Spoken English Bootcamp!**\n\nFluent English bolna seekho — bilkul natural tarike se!\n\n**Aaj kya practice karein?**\n1️⃣ 🎭 Roleplay (Office/Travel/Shopping)\n2️⃣ 🗣️ Free conversation practice\n3️⃣ 🔊 Pronunciation fixing\n4️⃣ 💬 Daily use phrases\n\nBatao — conversation shuru! 🚀`,
+  email: `📧 **Email & Business Writing Coach!**\n\nProfessional emails likhna seekho — job application se lekar boss ko mail karna!\n\n**Kaunsa email sikhna hai?**\n1️⃣ Leave application\n2️⃣ Job application\n3️⃣ Follow-up email\n4️⃣ Complaint/Request email\n5️⃣ Apni situation batao — main template dunga\n\nBatao — likhna shuru! ✍️`,
+  pronunciation: `🔊 **Pronunciation Clinic!**\n\nIndians jo common mistakes karte hain — unhe fix karte hain!\n\n**Kaunsa area fix karein?**\n1️⃣ V vs W (very/wery)\n2️⃣ TH sound (this/dis)\n3️⃣ Word stress\n4️⃣ Vowel sounds\n5️⃣ Meri specific word/sentence check karo\n\nBatao — practice start! 👄`,
+  quiz: `🧠 **English Quiz Time — KBC Style!**\n\n"Kya aap confident hain?" 😄\n\n**Quiz type choose karo:**\n1️⃣ Vocabulary Quiz\n2️⃣ Grammar Quiz  \n3️⃣ Translation Challenge\n4️⃣ Mixed (Sabka thoda thoda)\n\n**Difficulty:**\nA) Easy 🟢\nB) Medium 🟡\nC) Hard 🔴\n\nBatao — game shuru! 🎯`
+};
+
+function setMode(mode, btn) {
+  currentMode = mode;
+  messages = [];
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('chat').innerHTML = '';
+  document.getElementById('mode-label').textContent = btn.textContent.trim().substring(0, 8);
+  addBotMessage(MODE_STARTERS[mode]);
+}
 
 function formatText(text) {
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/❌/g, '<span style="color:#ff6b6b">❌</span>')
+    .replace(/✅/g, '<span style="color:#51cf66">✅</span>')
     .replace(/\n/g, '<br/>');
 }
 
@@ -268,7 +394,6 @@ async function sendMessage(text) {
   const input = document.getElementById('user-input');
   const userText = text || input.value.trim();
   if (!userText) return;
-
   input.value = '';
   addUserMessage(userText);
   showTyping();
@@ -283,10 +408,10 @@ async function sendMessage(text) {
       },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
-        max_tokens: 1024,
+        max_tokens: 1200,
         temperature: 0.8,
         messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'system', content: MODE_PROMPTS[currentMode] },
           ...messages.slice(0, -1)
         ]
       })
@@ -296,7 +421,7 @@ async function sendMessage(text) {
     removeTyping();
 
     if (data.error) {
-      addBotMessage('⚠️ Error aa gaya: ' + data.error.message + '\n\nThodi der baad try karo!');
+      addBotMessage('⚠️ Error: ' + data.error.message + '\n\nThodi der baad try karo!');
       return;
     }
 
@@ -307,13 +432,11 @@ async function sendMessage(text) {
 
   } catch (err) {
     removeTyping();
-    addBotMessage('⚠️ Internet connection check karo aur dobara try karo!');
+    addBotMessage('⚠️ Internet check karo aur dobara try karo!');
   } finally {
     document.getElementById('send-btn').disabled = false;
   }
 }
-
-function quickSend(text) { sendMessage(text); }
 
 function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
@@ -321,6 +444,10 @@ function handleKey(e) {
     sendMessage();
   }
 }
+
+window.onload = () => {
+  addBotMessage(MODE_STARTERS['chat']);
+};
 </script>
 </body>
 </html>
