@@ -183,6 +183,13 @@
 
     /* XP POP */
     .xp-pop{position:fixed;top:68px;right:14px;z-index:50;background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a35;font-weight:700;font-size:13px;padding:7px 14px;border-radius:20px;box-shadow:0 4px 20px rgba(247,151,30,0.5);animation:xpPop 2s ease forwards;pointer-events:none;}
+    .speak-row{margin-top:6px;text-align:right;}
+    .speak-btn{background:none;border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.5);font-size:11px;padding:2px 8px;cursor:pointer;transition:all 0.2s;}
+    .speak-btn:hover{background:rgba(127,119,221,0.2);color:#AFA9EC;border-color:#AFA9EC;}
+    .speak-btn.speaking{color:#ffd200;border-color:#ffd200;animation:speakPulse 1s infinite;}
+    @keyframes speakPulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+    .voice-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(127,119,221,0.9);color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600;z-index:50;animation:toastIn 0.3s ease;pointer-events:none;}
+    @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
     @keyframes xpPop{0%{opacity:0;transform:translateY(-10px) scale(0.9);}20%{opacity:1;transform:translateY(0) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translateY(-20px);}}
     @keyframes fadeIn2{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
     .more-btn{background:rgba(255,255,255,0.05);border-style:dashed;}
@@ -255,6 +262,7 @@
     <button class="icon-btn" id="installBtn" onclick="installPWA()" title="App Install Karo" style="display:none"><i class="ti ti-download"></i></button>
     <button class="icon-btn" onclick="openSharePopup()" title="Share karo" style="color:#25D366;border-color:rgba(37,211,102,0.4);background:rgba(37,211,102,0.1)"><i class="ti ti-brand-whatsapp"></i></button>
     <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Dark/Light"><i class="ti ti-sun"></i></button>
+    <button class="icon-btn" id="voiceBtn" onclick="toggleVoice()" title="AI Voice ON/OFF" style="color:#AFA9EC;border-color:rgba(175,169,236,0.4);background:rgba(127,119,221,0.1)"><i class="ti ti-volume"></i></button>
   </div>
 </div>
 
@@ -665,8 +673,11 @@ function addBotMsg(text){
   messages.push({role:'assistant',content:text});
   const chat=document.getElementById('chat');
   const row=document.createElement('div');row.className='msg-row';
-  row.innerHTML=`<div class="avatar">🎓</div><div class="bubble bot">${formatText(text)}</div>`;
+  const msgId='msg_'+Date.now();
+  row.innerHTML=`<div class="avatar">🎓</div><div class="bubble bot" id="${msgId}">${formatText(text)}<div class="speak-row"><button class="speak-btn" onclick="speakText(this,'${msgId}')" title="Sunao">🔊</button></div></div>`;
   chat.appendChild(row);chat.scrollTop=chat.scrollHeight;
+  // auto speak if voice is ON
+  if(voiceEnabled) speakTextDirect(stripMarkdown(text));
 }
 
 function addUserMsg(text){
@@ -746,6 +757,115 @@ async function sendMessage(){
   }
 }
 
+// ── VOICE ENGINE ──
+let voiceEnabled = false;
+let currentUtterance = null;
+let availableVoices = [];
+
+function loadVoices(){
+  availableVoices = window.speechSynthesis.getVoices();
+}
+if(window.speechSynthesis){
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function getBestVoice(){
+  // Priority: Indian English > any English
+  const prefs = ['en-IN','en-GB','en-US','en'];
+  for(const lang of prefs){
+    const v = availableVoices.find(v=>v.lang.startsWith(lang));
+    if(v) return v;
+  }
+  return availableVoices[0] || null;
+}
+
+function stripMarkdown(text){
+  return text
+    .replace(/\*\*(.*?)\*\*/g,'$1')
+    .replace(/\*(.*?)\*/g,'$1')
+    .replace(/[❌✅🎓📅💡🔤🗣️📚✍️🎯🗣️👔🎤📧🔊🧠🎭]/g,'')
+    .replace(/[#*_`]/g,'')
+    .replace(/\n/g,' ')
+    .trim();
+}
+
+function speakTextDirect(text){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  if(!text || text.length < 2) return;
+  // Only speak English parts (skip Hindi)
+  const englishOnly = text.replace(/[\u0900-\u097F]+/g,'').trim();
+  if(!englishOnly) return;
+  currentUtterance = new SpeechSynthesisUtterance(englishOnly.substring(0,500));
+  const v = getBestVoice();
+  if(v) currentUtterance.voice = v;
+  currentUtterance.lang = 'en-IN';
+  currentUtterance.rate = 0.85;
+  currentUtterance.pitch = 1.0;
+  currentUtterance.volume = 1.0;
+  window.speechSynthesis.speak(currentUtterance);
+}
+
+function speakText(btn, msgId){
+  if(!window.speechSynthesis){ showVoiceToast('Browser voice support nahi hai'); return; }
+  // If already speaking this msg, stop
+  if(btn.classList.contains('speaking')){
+    window.speechSynthesis.cancel();
+    btn.classList.remove('speaking');
+    btn.textContent = '🔊';
+    return;
+  }
+  // Stop any current speech
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.speak-btn.speaking').forEach(b=>{b.classList.remove('speaking');b.textContent='🔊';});
+  const bubble = document.getElementById(msgId);
+  if(!bubble) return;
+  const rawText = bubble.innerText.replace('🔊','').trim();
+  const cleaned = stripMarkdown(rawText);
+  const englishOnly = cleaned.replace(/[\u0900-\u097F]+/g,'').trim();
+  if(!englishOnly){ showVoiceToast('Yahan bolne ke liye kuch nahi'); return; }
+  btn.classList.add('speaking');
+  btn.textContent = '⏹';
+  currentUtterance = new SpeechSynthesisUtterance(englishOnly.substring(0,600));
+  const v = getBestVoice();
+  if(v) currentUtterance.voice = v;
+  currentUtterance.lang = 'en-IN';
+  currentUtterance.rate = 0.85;
+  currentUtterance.pitch = 1.0;
+  currentUtterance.volume = 1.0;
+  currentUtterance.onend = ()=>{ btn.classList.remove('speaking'); btn.textContent='🔊'; };
+  currentUtterance.onerror = ()=>{ btn.classList.remove('speaking'); btn.textContent='🔊'; };
+  window.speechSynthesis.speak(currentUtterance);
+}
+
+function toggleVoice(){
+  voiceEnabled = !voiceEnabled;
+  save('voice', voiceEnabled);
+  const btn = document.getElementById('voiceBtn');
+  if(voiceEnabled){
+    btn.style.color='#ffd200';
+    btn.style.borderColor='rgba(255,210,0,0.5)';
+    btn.style.background='rgba(255,210,0,0.1)';
+    btn.querySelector('i').className='ti ti-volume';
+    showVoiceToast('🔊 AI Voice ON — AI bolke batayega!');
+  } else {
+    btn.style.color='#AFA9EC';
+    btn.style.borderColor='rgba(175,169,236,0.3)';
+    btn.style.background='rgba(127,119,221,0.08)';
+    btn.querySelector('i').className='ti ti-volume-off';
+    window.speechSynthesis && window.speechSynthesis.cancel();
+    showVoiceToast('🔇 AI Voice OFF');
+  }
+}
+
+function showVoiceToast(msg){
+  const el=document.createElement('div');
+  el.className='voice-toast';el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),2500);
+}
+
 function toggleMoreModes(){
   const el=document.getElementById('more-modes');
   const btn=document.getElementById('more-btn');
@@ -776,6 +896,12 @@ window.onload=()=>{
     if(messages.length===0)startChat(w);
   }
   document.getElementById('user-input').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
+  // load voice pref
+  voiceEnabled = load('voice', false);
+  if(voiceEnabled){
+    const btn=document.getElementById('voiceBtn');
+    if(btn){btn.style.color='#ffd200';btn.style.borderColor='rgba(255,210,0,0.5)';btn.style.background='rgba(255,210,0,0.1)';btn.querySelector('i').className='ti ti-volume';}
+  }
 };
 </script>
 </body>
