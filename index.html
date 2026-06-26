@@ -14,257 +14,175 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-      transition: background 0.4s;
-    }
-    body.light { background: linear-gradient(135deg, #e0e7ff, #f0f4ff, #fafafa); }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;display:flex;flex-direction:column;align-items:center;transition:background 0.4s;}
+    body.light{background:linear-gradient(135deg,#e0e7ff,#f0f4ff,#fafafa);}
 
-    /* ONBOARDING OVERLAY */
-    #onboarding {
-      position: fixed; inset: 0; z-index: 100;
-      background: linear-gradient(135deg, #0f0c29, #302b63);
-      display: flex; align-items: center; justify-content: center; padding: 24px;
-    }
-    #onboarding.hidden { display: none; }
-    .ob-card {
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 24px; padding: 32px 28px; max-width: 400px; width: 100%; text-align: center;
-    }
-    .ob-icon { font-size: 52px; margin-bottom: 12px; }
-    .ob-title { font-size: 24px; font-weight: 700; color: #ffd200; margin-bottom: 6px; }
-    .ob-sub { font-size: 14px; color: rgba(255,255,255,0.65); margin-bottom: 24px; line-height: 1.6; }
-    .ob-label { font-size: 13px; color: rgba(255,255,255,0.7); text-align: left; margin-bottom: 6px; }
-    .ob-input {
-      width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 12px; padding: 12px 16px; color: #fff; font-size: 15px;
-      outline: none; margin-bottom: 16px; font-family: inherit;
-    }
-    .ob-input:focus { border-color: #ffd200; }
-    .ob-levels { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 24px; }
-    .ob-level {
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 12px; padding: 12px 8px; cursor: pointer; transition: all 0.2s;
-      color: #ddd; font-size: 12px; text-align: center;
-    }
-    .ob-level:hover, .ob-level.selected { background: rgba(255,210,0,0.15); border-color: #ffd200; color: #ffd200; font-weight: 600; }
-    .ob-level .lvl-icon { font-size: 22px; margin-bottom: 4px; }
-    .ob-btn {
-      width: 100%; background: linear-gradient(135deg, #f7971e, #ffd200);
-      border: none; border-radius: 12px; padding: 14px; font-size: 16px;
-      font-weight: 700; cursor: pointer; color: #1a1a35; transition: opacity 0.2s;
-    }
-    .ob-btn:hover { opacity: 0.9; }
+    /* ONBOARDING */
+    #onboarding{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg,#0f0c29,#302b63);display:flex;align-items:center;justify-content:center;padding:20px;}
+    #onboarding.hidden{display:none;}
+    .ob-card{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:24px;padding:28px 24px;max-width:400px;width:100%;text-align:center;}
+    .ob-icon{font-size:48px;margin-bottom:10px;}
+    .ob-title{font-size:22px;font-weight:700;color:#ffd200;margin-bottom:4px;}
+    .ob-sub{font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:20px;line-height:1.6;}
+    .ob-label{font-size:12px;color:rgba(255,255,255,0.7);text-align:left;margin-bottom:5px;}
+    .ob-input{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:11px 14px;color:#fff;font-size:14px;outline:none;margin-bottom:14px;font-family:inherit;}
+    .ob-input:focus{border-color:#ffd200;}
+    .ob-levels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px;}
+    .ob-level{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:10px 6px;cursor:pointer;transition:all 0.2s;color:#ddd;font-size:12px;text-align:center;}
+    .ob-level:hover,.ob-level.selected{background:rgba(255,210,0,0.15);border-color:#ffd200;color:#ffd200;font-weight:600;}
+    .ob-level .lvl-icon{font-size:20px;margin-bottom:3px;}
+    .ob-btn{width:100%;background:linear-gradient(135deg,#f7971e,#ffd200);border:none;border-radius:12px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;color:#1a1a35;transition:opacity 0.2s;}
+    .ob-btn:hover{opacity:0.9;}
+
+    /* SHARE POPUP */
+    #share-popup{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;padding:20px;}
+    #share-popup.hidden{display:none;}
+    .sp-card{background:#1a1a35;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:24px;max-width:360px;width:100%;text-align:center;}
+    .sp-title{font-size:18px;font-weight:700;color:#ffd200;margin-bottom:6px;}
+    .sp-sub{font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:18px;line-height:1.6;}
+    .sp-btns{display:flex;flex-direction:column;gap:10px;}
+    .sp-btn{padding:12px 16px;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity 0.2s;}
+    .sp-btn:hover{opacity:0.85;}
+    .sp-wa{background:#25D366;color:#fff;}
+    .sp-copy{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);}
+    .sp-close{background:none;color:rgba(255,255,255,0.5);border:none;font-size:12px;margin-top:8px;cursor:pointer;}
 
     /* HEADER */
-    #header {
-      width: 100%; max-width: 720px;
-      background: rgba(255,255,255,0.05); backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding: 12px 16px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 10;
-    }
-    body.light #header { background: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(0,0,0,0.1); }
-    .logo-area { display: flex; align-items: center; gap: 10px; }
-    .logo-icon {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: linear-gradient(135deg, #f7971e, #ffd200);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; box-shadow: 0 4px 15px rgba(247,151,30,0.4); flex-shrink: 0;
-    }
-    .logo-title { color: #fff; font-weight: 700; font-size: 16px; }
-    body.light .logo-title { color: #1a1a35; }
-    .logo-sub { color: #ffd200; font-size: 10px; font-weight: 500; }
-    body.light .logo-sub { color: #f7971e; }
-    .header-right { display: flex; align-items: center; gap: 6px; }
-    .stats { display: flex; gap: 5px; }
-    .stat-box {
-      background: rgba(255,210,0,0.1); border: 1px solid rgba(255,210,0,0.3);
-      border-radius: 16px; padding: 3px 8px; text-align: center; cursor: default;
-    }
-    .stat-num { color: #ffd200; font-size: 12px; font-weight: 700; }
-    .stat-label { color: #aaa; font-size: 9px; }
-    .icon-btn {
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-      color: #fff; width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.2s;
-    }
-    .icon-btn:hover { background: rgba(255,255,255,0.2); }
-    body.light .icon-btn { color: #1a1a35; background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.12); }
+    #header{width:100%;max-width:720px;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.1);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+    body.light #header{background:rgba(255,255,255,0.85);border-bottom:1px solid rgba(0,0,0,0.1);}
+    .logo-area{display:flex;align-items:center;gap:9px;}
+    .logo-icon{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f7971e,#ffd200);display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 4px 15px rgba(247,151,30,0.4);flex-shrink:0;}
+    .logo-title{color:#fff;font-weight:700;font-size:15px;}
+    body.light .logo-title{color:#1a1a35;}
+    .logo-sub{color:#ffd200;font-size:10px;font-weight:500;}
+    body.light .logo-sub{color:#f7971e;}
+    .header-right{display:flex;align-items:center;gap:5px;}
+    .stats{display:flex;gap:4px;}
+    .stat-box{background:rgba(255,210,0,0.1);border:1px solid rgba(255,210,0,0.3);border-radius:14px;padding:3px 7px;text-align:center;}
+    .stat-num{color:#ffd200;font-size:11px;font-weight:700;}
+    .stat-label{color:#aaa;font-size:8px;}
+    .icon-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;flex-shrink:0;}
+    .icon-btn:hover{background:rgba(255,255,255,0.2);}
+    body.light .icon-btn{color:#1a1a35;background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.12);}
 
-    /* WORD OF THE DAY */
-    #wotd-banner {
-      width: 100%; max-width: 720px;
-      background: linear-gradient(135deg, #1D9E75, #0F6E56);
-      padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    }
-    .wotd-tag { font-size: 9px; color: rgba(255,255,255,0.65); letter-spacing: 1px; text-transform: uppercase; }
-    .wotd-word { font-size: 17px; font-weight: 600; color: #fff; }
-    .wotd-meaning { font-size: 12px; color: rgba(255,255,255,0.85); }
-    .wotd-eg { font-size: 11px; color: rgba(255,255,255,0.6); font-style: italic; margin-top: 2px; }
+    /* WOTD */
+    #wotd-banner{width:100%;max-width:720px;background:linear-gradient(135deg,#1D9E75,#0F6E56);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+    .wotd-tag{font-size:9px;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
+    .wotd-word{font-size:17px;font-weight:600;color:#fff;}
+    .wotd-meaning{font-size:12px;color:rgba(255,255,255,0.85);}
+    .wotd-eg{font-size:11px;color:rgba(255,255,255,0.6);font-style:italic;margin-top:2px;}
+    .wotd-share-hint{font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px;cursor:pointer;text-decoration:underline;}
 
     /* PROGRESS STRIP */
-    #progress-strip {
-      width: 100%; max-width: 720px;
-      background: rgba(255,255,255,0.04); padding: 8px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-    body.light #progress-strip { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.07); }
-    .prog-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-    .prog-label { font-size: 11px; color: rgba(255,255,255,0.55); }
-    body.light .prog-label { color: rgba(0,0,0,0.45); }
-    .prog-xp { font-size: 11px; color: #EF9F27; font-weight: 600; }
-    .prog-track { background: rgba(255,255,255,0.12); border-radius: 99px; height: 5px; overflow: hidden; }
-    body.light .prog-track { background: rgba(0,0,0,0.1); }
-    .prog-fill { background: linear-gradient(90deg, #7F77DD, #AFA9EC); height: 100%; border-radius: 99px; transition: width 0.6s ease; }
-    .streak-dots { display: flex; gap: 4px; margin-top: 6px; }
-    .sdot { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.12); max-width: 36px; }
-    body.light .sdot { background: rgba(0,0,0,0.1); }
-    .sdot.done { background: #1D9E75; }
+    #progress-strip{width:100%;max-width:720px;background:rgba(255,255,255,0.04);padding:7px 16px;border-bottom:1px solid rgba(255,255,255,0.07);}
+    body.light #progress-strip{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.07);}
+    .prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+    .prog-label{font-size:11px;color:rgba(255,255,255,0.55);}
+    body.light .prog-label{color:rgba(0,0,0,0.45);}
+    .prog-xp{font-size:11px;color:#EF9F27;font-weight:600;}
+    .prog-track{background:rgba(255,255,255,0.12);border-radius:99px;height:5px;overflow:hidden;}
+    body.light .prog-track{background:rgba(0,0,0,0.1);}
+    .prog-fill{background:linear-gradient(90deg,#7F77DD,#AFA9EC);height:100%;border-radius:99px;transition:width 0.6s ease;}
+    .streak-dots{display:flex;gap:4px;margin-top:5px;}
+    .sdot{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.12);max-width:36px;}
+    body.light .sdot{background:rgba(0,0,0,0.1);}
+    .sdot.done{background:#1D9E75;}
 
-    /* MODE TABS */
-    #mode-tabs {
-      width: 100%; max-width: 720px;
-      display: flex; gap: 5px; padding: 8px 12px 5px;
-      overflow-x: auto; scrollbar-width: none;
-    }
-    #mode-tabs::-webkit-scrollbar { display: none; }
-    .mode-btn {
-      white-space: nowrap; background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.15); border-radius: 18px;
-      padding: 6px 12px; color: #ddd; font-size: 11.5px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;
-    }
-    body.light .mode-btn { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.12); color: #444; }
-    .mode-btn.active, .mode-btn:hover {
-      background: linear-gradient(135deg, #f7971e44, #ffd20044);
-      border-color: rgba(255,210,0,0.6); color: #ffd200; font-weight: 600;
-    }
-    body.light .mode-btn.active, body.light .mode-btn:hover { background: rgba(247,151,30,0.15); color: #c47a0a; }
-    .mode-btn.special { background: rgba(127,119,221,0.12); border-color: rgba(127,119,221,0.3); color: #AFA9EC; }
-    .mode-btn.special.active { background: rgba(127,119,221,0.25); border-color: rgba(127,119,221,0.7); color: #7F77DD; }
+    /* MODE TABS — 2 ROW WRAP */
+    #mode-tabs{width:100%;max-width:720px;display:flex;flex-wrap:wrap;gap:5px;padding:8px 12px 5px;}
+    .mode-btn{white-space:nowrap;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:5px 11px;color:#ddd;font-size:11px;cursor:pointer;transition:all 0.2s;flex-shrink:0;}
+    body.light .mode-btn{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.12);color:#444;}
+    .mode-btn.active,.mode-btn:hover{background:linear-gradient(135deg,#f7971e44,#ffd20044);border-color:rgba(255,210,0,0.6);color:#ffd200;font-weight:600;}
+    body.light .mode-btn.active,body.light .mode-btn:hover{background:rgba(247,151,30,0.15);color:#c47a0a;}
+    .mode-btn.special{background:rgba(127,119,221,0.12);border-color:rgba(127,119,221,0.3);color:#AFA9EC;}
+    .mode-btn.special.active{background:rgba(127,119,221,0.25);border-color:rgba(127,119,221,0.7);color:#7F77DD;}
 
     /* CHAT */
-    #chat {
-      width: 100%; max-width: 720px; flex: 1;
-      padding: 14px; display: flex; flex-direction: column; gap: 12px;
-      overflow-y: auto; min-height: calc(100vh - 380px);
-    }
-    .msg-row { display: flex; align-items: flex-end; gap: 8px; animation: msgIn 0.2s ease; }
-    .msg-row.user { flex-direction: row-reverse; }
-    @keyframes msgIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
-    .avatar {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: linear-gradient(135deg, #f7971e, #ffd200);
-      display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
-    }
-    .bubble {
-      max-width: 80%; border-radius: 18px 18px 18px 4px;
-      padding: 12px 16px; color: #fff; font-size: 14px; line-height: 1.7;
-    }
-    .bubble.bot { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); }
-    body.light .bubble.bot { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #1a1a35; }
-    .bubble.user {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border-radius: 18px 18px 4px 18px;
-      box-shadow: 0 4px 20px rgba(102,126,234,0.4);
-    }
-    .bubble strong { color: #ffd200; }
-    body.light .bubble.bot strong { color: #c47a0a; }
-    .typing-dots { display: flex; gap: 5px; align-items: center; padding: 4px 0; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: #ffd200; animation: bounce 1.2s ease-in-out infinite; }
-    .dot:nth-child(2) { animation-delay: 0.2s; }
-    .dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes bounce { 0%,60%,100% { transform:translateY(0); opacity:0.5; } 30% { transform:translateY(-8px); opacity:1; } }
+    #chat{width:100%;max-width:720px;flex:1;padding:12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;min-height:calc(100vh - 400px);}
+    .msg-row{display:flex;align-items:flex-end;gap:8px;animation:msgIn 0.2s ease;}
+    .msg-row.user{flex-direction:row-reverse;}
+    @keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+    .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f7971e,#ffd200);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+    .bubble{max-width:80%;border-radius:18px 18px 18px 4px;padding:11px 15px;color:#fff;font-size:14px;line-height:1.7;}
+    .bubble.bot{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);}
+    body.light .bubble.bot{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.1);color:#1a1a35;}
+    .bubble.user{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:18px 18px 4px 18px;box-shadow:0 4px 20px rgba(102,126,234,0.4);}
+    .bubble strong{color:#ffd200;}
+    body.light .bubble.bot strong{color:#c47a0a;}
+    .typing-dots{display:flex;gap:5px;align-items:center;padding:4px 0;}
+    .dot{width:8px;height:8px;border-radius:50%;background:#ffd200;animation:bounce 1.2s ease-in-out infinite;}
+    .dot:nth-child(2){animation-delay:0.2s;}
+    .dot:nth-child(3){animation-delay:0.4s;}
+    @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:0.5;}30%{transform:translateY(-8px);opacity:1;}}
+
+    /* TELL A FRIEND BANNER */
+    .taf-banner{width:100%;max-width:720px;background:linear-gradient(135deg,rgba(37,211,102,0.15),rgba(37,211,102,0.05));border-top:1px solid rgba(37,211,102,0.2);border-bottom:1px solid rgba(37,211,102,0.2);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .taf-text{font-size:12px;color:rgba(255,255,255,0.8);}
+    body.light .taf-text{color:rgba(0,0,0,0.65);}
+    .taf-text strong{color:#25D366;}
+    .taf-btn{background:#25D366;border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:opacity 0.2s;}
+    .taf-btn:hover{opacity:0.85;}
 
     /* INPUT */
-    #input-area {
-      width: 100%; max-width: 720px; padding: 8px 12px 16px;
-      display: flex; gap: 8px; align-items: flex-end;
-    }
-    .input-actions { display: flex; gap: 6px; align-items: flex-end; }
-    #user-input {
-      flex: 1; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 16px; padding: 11px 14px; color: #fff; font-size: 14px;
-      resize: none; outline: none; line-height: 1.5; font-family: inherit; transition: border 0.2s;
-      min-height: 44px; max-height: 120px;
-    }
-    body.light #user-input { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.15); color: #1a1a35; }
-    #user-input:focus { border-color: rgba(255,210,0,0.6); }
-    #user-input::placeholder { color: rgba(255,255,255,0.35); }
-    body.light #user-input::placeholder { color: rgba(0,0,0,0.3); }
-    .round-btn {
-      width: 44px; height: 44px; border-radius: 50%; border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: all 0.2s;
-    }
-    #send-btn { background: linear-gradient(135deg, #f7971e, #ffd200); box-shadow: 0 4px 15px rgba(247,151,30,0.5); }
-    #send-btn:disabled { background: rgba(255,255,255,0.1); box-shadow: none; cursor: not-allowed; }
-    #mic-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; }
-    body.light #mic-btn { color: #1a1a35; background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.12); }
-    #clear-btn { background: rgba(255,80,80,0.12); border: 1px solid rgba(255,80,80,0.25); color: #ff8080; }
-    #clear-btn:hover { background: rgba(255,80,80,0.2); }
-    #mic-btn.recording { background: #D4537E; border-color: #D4537E; color: #fff; animation: pulse 0.8s infinite; }
-    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,83,126,0.5); } 50% { box-shadow: 0 0 0 10px rgba(212,83,126,0); } }
+    #input-area{width:100%;max-width:720px;padding:6px 12px 14px;display:flex;gap:7px;align-items:flex-end;}
+    #user-input{flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:11px 14px;color:#fff;font-size:14px;resize:none;outline:none;line-height:1.5;font-family:inherit;transition:border 0.2s;min-height:44px;max-height:120px;}
+    body.light #user-input{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.15);color:#1a1a35;}
+    #user-input:focus{border-color:rgba(255,210,0,0.6);}
+    #user-input::placeholder{color:rgba(255,255,255,0.35);}
+    body.light #user-input::placeholder{color:rgba(0,0,0,0.3);}
+    .input-actions{display:flex;gap:5px;align-items:flex-end;}
+    .round-btn{width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:all 0.2s;}
+    #send-btn{background:linear-gradient(135deg,#f7971e,#ffd200);box-shadow:0 4px 15px rgba(247,151,30,0.5);}
+    #send-btn:disabled{background:rgba(255,255,255,0.1);box-shadow:none;cursor:not-allowed;}
+    #mic-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#fff;}
+    body.light #mic-btn{color:#1a1a35;background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.12);}
+    #clear-btn{background:rgba(255,80,80,0.1);border:1px solid rgba(255,80,80,0.2);color:#ff8080;}
+    #mic-btn.recording{background:#D4537E;border-color:#D4537E;color:#fff;animation:pulse 0.8s infinite;}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(212,83,126,0.5);}50%{box-shadow:0 0 0 10px rgba(212,83,126,0);}}
 
     /* SPECIAL SECTION */
-    #special-section { display: none; width: 100%; max-width: 720px; padding: 14px; min-height: 300px; overflow-y: auto; }
-    #special-section.visible { display: block; }
-    .sec-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 12px; }
-    body.light .sec-title { color: #1a1a35; }
-    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-    .stat-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; text-align: center; }
-    body.light .stat-card { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
-    .stat-card .num { font-size: 26px; font-weight: 700; color: #7F77DD; }
-    .stat-card .lbl { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 3px; }
-    body.light .stat-card .lbl { color: rgba(0,0,0,0.4); }
-    .skill-row { margin-bottom: 10px; }
-    .skill-label { display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
-    body.light .skill-label { color: rgba(0,0,0,0.55); }
-    .badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .badge-card {
-      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px; padding: 14px; text-align: center; transition: 0.2s;
-    }
-    body.light .badge-card { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
-    .badge-card.unlocked { border-color: rgba(239,159,39,0.5); }
-    .badge-card.locked { opacity: 0.4; }
-    .badge-icon { font-size: 28px; margin-bottom: 6px; }
-    .badge-name { font-size: 12px; font-weight: 600; color: #fff; }
-    body.light .badge-name { color: #1a1a35; }
-    .badge-desc { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
-    body.light .badge-desc { color: rgba(0,0,0,0.4); }
-    .scenario-card {
-      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px; padding: 12px; margin-bottom: 10px; cursor: pointer;
-      transition: 0.2s; display: flex; gap: 12px; align-items: center;
-    }
-    body.light .scenario-card { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
-    .scenario-card:hover { border-color: rgba(127,119,221,0.5); background: rgba(127,119,221,0.08); }
-    .scene-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-    .scene-title { font-size: 13px; font-weight: 600; color: #fff; }
-    body.light .scene-title { color: #1a1a35; }
-    .scene-desc { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
-    body.light .scene-desc { color: rgba(0,0,0,0.4); }
-    .scene-tag { display: inline-block; margin-top: 4px; font-size: 10px; background: rgba(127,119,221,0.2); color: #AFA9EC; padding: 2px 8px; border-radius: 99px; }
-    .bar-chart { display: flex; gap: 4px; align-items: flex-end; height: 65px; margin-bottom: 14px; }
-    .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; height: 100%; justify-content: flex-end; }
-    .bar { width: 100%; border-radius: 4px 4px 0 0; }
-    .bar-day { font-size: 9px; color: rgba(255,255,255,0.4); }
-    body.light .bar-day { color: rgba(0,0,0,0.35); }
+    #special-section{display:none;width:100%;max-width:720px;padding:14px;overflow-y:auto;}
+    #special-section.visible{display:block;}
+    .sec-title{font-size:14px;font-weight:600;color:#fff;margin-bottom:12px;}
+    body.light .sec-title{color:#1a1a35;}
+    .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+    .stat-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;text-align:center;}
+    body.light .stat-card{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.08);}
+    .stat-card .num{font-size:26px;font-weight:700;color:#7F77DD;}
+    .stat-card .lbl{font-size:11px;color:rgba(255,255,255,0.5);margin-top:3px;}
+    body.light .stat-card .lbl{color:rgba(0,0,0,0.4);}
+    .skill-row{margin-bottom:10px;}
+    .skill-label{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;}
+    body.light .skill-label{color:rgba(0,0,0,0.55);}
+    .badge-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .badge-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;text-align:center;transition:0.2s;}
+    body.light .badge-card{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.08);}
+    .badge-card.unlocked{border-color:rgba(239,159,39,0.5);background:rgba(239,159,39,0.05);}
+    .badge-card.locked{opacity:0.4;}
+    .badge-icon{font-size:28px;margin-bottom:6px;}
+    .badge-name{font-size:12px;font-weight:600;color:#fff;}
+    body.light .badge-name{color:#1a1a35;}
+    .badge-desc{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;}
+    body.light .badge-desc{color:rgba(0,0,0,0.4);}
+    .scenario-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;margin-bottom:10px;cursor:pointer;transition:0.2s;display:flex;gap:12px;align-items:center;}
+    body.light .scenario-card{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.08);}
+    .scenario-card:hover{border-color:rgba(127,119,221,0.5);background:rgba(127,119,221,0.08);}
+    .scene-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+    .scene-title{font-size:13px;font-weight:600;color:#fff;}
+    body.light .scene-title{color:#1a1a35;}
+    .scene-desc{font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;}
+    body.light .scene-desc{color:rgba(0,0,0,0.4);}
+    .scene-tag{display:inline-block;margin-top:4px;font-size:10px;background:rgba(127,119,221,0.2);color:#AFA9EC;padding:2px 8px;border-radius:99px;}
+    .bar-chart{display:flex;gap:4px;align-items:flex-end;height:65px;margin-bottom:14px;}
+    .bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end;}
+    .bar{width:100%;border-radius:4px 4px 0 0;}
+    .bar-day{font-size:9px;color:rgba(255,255,255,0.4);}
+    body.light .bar-day{color:rgba(0,0,0,0.35);}
 
-    /* XP POPUP */
-    .xp-pop {
-      position: fixed; top: 70px; right: 16px; z-index: 50;
-      background: linear-gradient(135deg, #f7971e, #ffd200);
-      color: #1a1a35; font-weight: 700; font-size: 14px;
-      padding: 8px 16px; border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(247,151,30,0.5);
-      animation: xpPop 2s ease forwards;
-    }
-    @keyframes xpPop { 0% { opacity:0; transform:translateY(-10px) scale(0.9); } 20% { opacity:1; transform:translateY(0) scale(1); } 80% { opacity:1; } 100% { opacity:0; transform:translateY(-20px); } }
+    /* XP POP */
+    .xp-pop{position:fixed;top:68px;right:14px;z-index:50;background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a35;font-weight:700;font-size:13px;padding:7px 14px;border-radius:20px;box-shadow:0 4px 20px rgba(247,151,30,0.5);animation:xpPop 2s ease forwards;pointer-events:none;}
+    @keyframes xpPop{0%{opacity:0;transform:translateY(-10px) scale(0.9);}20%{opacity:1;transform:translateY(0) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translateY(-20px);}}
   </style>
 </head>
 <body>
@@ -276,14 +194,32 @@
     <div class="ob-title">EnglishSaathi</div>
     <div class="ob-sub">Aapka personal AI English tutor!<br>Hindi mein poochho — English mein seekho 🚀</div>
     <div class="ob-label">Aapka naam kya hai?</div>
-    <input class="ob-input" id="ob-name" type="text" placeholder="Apna naam likhein..." maxlength="30" />
+    <input class="ob-input" id="ob-name" type="text" placeholder="Apna naam likhein..." maxlength="30"/>
     <div class="ob-label">Aapka English level kaisa hai?</div>
     <div class="ob-levels">
-      <div class="ob-level" onclick="selectLevel('beginner', this)"><div class="lvl-icon">🌱</div>Beginner</div>
-      <div class="ob-level" onclick="selectLevel('intermediate', this)"><div class="lvl-icon">📘</div>Intermediate</div>
-      <div class="ob-level" onclick="selectLevel('advanced', this)"><div class="lvl-icon">🚀</div>Advanced</div>
+      <div class="ob-level" onclick="selectLevel('Beginner',this)"><div class="lvl-icon">🌱</div>Beginner</div>
+      <div class="ob-level" onclick="selectLevel('Intermediate',this)"><div class="lvl-icon">📘</div>Intermediate</div>
+      <div class="ob-level" onclick="selectLevel('Advanced',this)"><div class="lvl-icon">🚀</div>Advanced</div>
     </div>
     <button class="ob-btn" onclick="completeOnboarding()">Shuru Karte Hain! →</button>
+  </div>
+</div>
+
+<!-- SHARE POPUP -->
+<div id="share-popup" class="hidden">
+  <div class="sp-card">
+    <div style="font-size:36px;margin-bottom:8px">🎓</div>
+    <div class="sp-title">Dosto ko batao! 🎉</div>
+    <div class="sp-sub">EnglishSaathi bilkul FREE hai!<br>Apne dosto aur family ko share karo — unka bhi English improve hoga!</div>
+    <div class="sp-btns">
+      <button class="sp-btn sp-wa" onclick="shareWhatsApp()">
+        <i class="ti ti-brand-whatsapp"></i> WhatsApp pe Share Karo
+      </button>
+      <button class="sp-btn sp-copy" onclick="copyLink()">
+        <i class="ti ti-copy"></i> Link Copy Karo
+      </button>
+    </div>
+    <button class="sp-close" onclick="closeSharePopup()">Baad mein karta hoon</button>
   </div>
 </div>
 
@@ -312,6 +248,7 @@
       </div>
     </div>
     <button class="icon-btn" id="installBtn" onclick="installPWA()" title="App Install Karo" style="display:none"><i class="ti ti-download"></i></button>
+    <button class="icon-btn" onclick="openSharePopup()" title="Dosto ko share karo" style="color:#25D366;border-color:rgba(37,211,102,0.4);background:rgba(37,211,102,0.1)"><i class="ti ti-share"></i></button>
     <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Dark/Light mode"><i class="ti ti-sun"></i></button>
   </div>
 </div>
@@ -323,10 +260,17 @@
     <div class="wotd-word" id="wotd-word">—</div>
     <div class="wotd-meaning" id="wotd-meaning">—</div>
     <div class="wotd-eg" id="wotd-eg">—</div>
+    <div class="wotd-share-hint" onclick="shareWordOfDay()">👆 Dosto ko yeh word share karo!</div>
   </div>
 </div>
 
-<!-- XP PROGRESS STRIP -->
+<!-- TELL A FRIEND BANNER -->
+<div class="taf-banner" id="taf-banner">
+  <div class="taf-text">🎉 <strong>FREE hai!</strong> Apne dosto ko bhi English sikhao — share karo!</div>
+  <button class="taf-btn" onclick="openSharePopup()">Share करो 📲</button>
+</div>
+
+<!-- PROGRESS STRIP -->
 <div id="progress-strip">
   <div class="prog-row">
     <span class="prog-label" id="streak-label">🔥 0 day streak</span>
@@ -338,627 +282,456 @@
 
 <!-- MODE TABS -->
 <div id="mode-tabs">
-  <button class="mode-btn active" onclick="setMode('chat', this)">💬 Free Chat</button>
-  <button class="mode-btn" onclick="setMode('lesson', this)">📚 Lessons</button>
-  <button class="mode-btn" onclick="setMode('vocab', this)">📝 Vocabulary</button>
-  <button class="mode-btn" onclick="setMode('grammar', this)">✍️ Grammar</button>
-  <button class="mode-btn" onclick="setMode('interview', this)">🎯 Interview Prep</button>
-  <button class="mode-btn" onclick="setMode('gd', this)">🗣️ GD Practice</button>
-  <button class="mode-btn" onclick="setMode('pi', this)">👔 PI Practice</button>
-  <button class="mode-btn" onclick="setMode('spoken', this)">🎤 Spoken English</button>
-  <button class="mode-btn" onclick="setMode('email', this)">📧 Email Writing</button>
-  <button class="mode-btn" onclick="setMode('pronunciation', this)">🔊 Pronunciation</button>
-  <button class="mode-btn" onclick="setMode('quiz', this)">🧠 Quiz</button>
-  <button class="mode-btn special" onclick="showSpecial('progress', this)">📊 Progress</button>
-  <button class="mode-btn special" onclick="showSpecial('badges', this)">🏆 Badges</button>
-  <button class="mode-btn special" onclick="showSpecial('roleplay', this)">🎭 Roleplay</button>
+  <button class="mode-btn active" onclick="setMode('chat',this)">💬 Free Chat</button>
+  <button class="mode-btn" onclick="setMode('lesson',this)">📚 Lessons</button>
+  <button class="mode-btn" onclick="setMode('vocab',this)">📝 Vocabulary</button>
+  <button class="mode-btn" onclick="setMode('grammar',this)">✍️ Grammar</button>
+  <button class="mode-btn" onclick="setMode('interview',this)">🎯 Interview Prep</button>
+  <button class="mode-btn" onclick="setMode('gd',this)">🗣️ GD Practice</button>
+  <button class="mode-btn" onclick="setMode('pi',this)">👔 PI Practice</button>
+  <button class="mode-btn" onclick="setMode('spoken',this)">🎤 Spoken English</button>
+  <button class="mode-btn" onclick="setMode('email',this)">📧 Email Writing</button>
+  <button class="mode-btn" onclick="setMode('pronunciation',this)">🔊 Pronunciation</button>
+  <button class="mode-btn" onclick="setMode('quiz',this)">🧠 Quiz</button>
+  <button class="mode-btn special" onclick="showSpecial('progress',this)">📊 Progress</button>
+  <button class="mode-btn special" onclick="showSpecial('badges',this)">🏆 Badges</button>
+  <button class="mode-btn special" onclick="showSpecial('roleplay',this)">🎭 Roleplay</button>
 </div>
 
-<!-- CHAT AREA -->
+<!-- CHAT -->
 <div id="chat"></div>
 
 <!-- SPECIAL SECTIONS -->
 <div id="special-section">
-
   <div id="sec-progress" style="display:none">
     <div class="sec-title">📊 Aapki Progress</div>
     <div class="stat-grid">
-      <div class="stat-card"><div class="num" id="p-words">0</div><div class="lbl">Words Learned</div></div>
-      <div class="stat-card"><div class="num" id="p-msgs">0</div><div class="lbl">Messages Sent</div></div>
+      <div class="stat-card"><div class="num" id="p-words">0</div><div class="lbl">Responses Mile</div></div>
+      <div class="stat-card"><div class="num" id="p-msgs">0</div><div class="lbl">Messages Bheje</div></div>
       <div class="stat-card"><div class="num" id="p-streak">0</div><div class="lbl">Day Streak</div></div>
       <div class="stat-card"><div class="num" id="p-xp">0</div><div class="lbl">Total XP</div></div>
     </div>
-    <div class="sec-title">This week's activity</div>
+    <div class="sec-title">This Week</div>
     <div class="bar-chart" id="week-chart"></div>
     <div class="sec-title">Level Progress</div>
     <div class="skill-row">
       <div class="skill-label"><span id="p-level-label">Level 1</span><span id="p-level-pct" style="color:#7F77DD">0%</span></div>
       <div class="prog-track"><div class="prog-fill" id="p-prog-fill" style="width:0%"></div></div>
     </div>
+    <div style="margin-top:16px;text-align:center;">
+      <button class="taf-btn" onclick="openSharePopup()" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;font-size:13px;">
+        <i class="ti ti-brand-whatsapp"></i> Progress share karo dosto se!
+      </button>
+    </div>
   </div>
 
   <div id="sec-badges" style="display:none">
     <div class="sec-title">🏆 Achievements</div>
     <div class="badge-grid" id="badge-grid"></div>
+    <div style="margin-top:16px;text-align:center;">
+      <button class="taf-btn" onclick="openSharePopup()" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;font-size:13px;">
+        <i class="ti ti-share"></i> Badges share karo!
+      </button>
+    </div>
   </div>
 
   <div id="sec-roleplay" style="display:none">
     <div class="sec-title">🎭 Roleplay Scenarios</div>
-    <div class="scenario-card" onclick="startScenario('job')">
-      <div class="scene-icon" style="background:rgba(127,119,221,0.15)">💼</div>
-      <div><div class="scene-title">Job Interview</div><div class="scene-desc">HR se baat karo, apne aap ko present karo</div><span class="scene-tag">Intermediate</span></div>
-    </div>
-    <div class="scenario-card" onclick="startScenario('doctor')">
-      <div class="scene-icon" style="background:rgba(29,158,117,0.15)">🏥</div>
-      <div><div class="scene-title">Doctor Visit</div><div class="scene-desc">Symptoms explain karo English mein</div><span class="scene-tag">Beginner</span></div>
-    </div>
-    <div class="scenario-card" onclick="startScenario('shopping')">
-      <div class="scene-icon" style="background:rgba(239,159,39,0.15)">🛍️</div>
-      <div><div class="scene-title">Shopping / Bargaining</div><div class="scene-desc">Price negotiate karo, quality poochho</div><span class="scene-tag">Beginner</span></div>
-    </div>
-    <div class="scenario-card" onclick="startScenario('hotel')">
-      <div class="scene-icon" style="background:rgba(212,83,126,0.15)">🏨</div>
-      <div><div class="scene-title">Hotel Check-in</div><div class="scene-desc">Reception pe baat karo, problems batao</div><span class="scene-tag">Intermediate</span></div>
-    </div>
-    <div class="scenario-card" onclick="startScenario('bank')">
-      <div class="scene-icon" style="background:rgba(56,138,221,0.15)">🏦</div>
-      <div><div class="scene-title">Bank / Finance</div><div class="scene-desc">Account open karo, loan ke baare mein poochho</div><span class="scene-tag">Advanced</span></div>
-    </div>
-    <div class="scenario-card" onclick="startScenario('airport')">
-      <div class="scene-icon" style="background:rgba(29,158,117,0.15)">✈️</div>
-      <div><div class="scene-title">Airport / Travel</div><div class="scene-desc">Check-in, boarding, customs mein baat karo</div><span class="scene-tag">Intermediate</span></div>
-    </div>
+    <div class="scenario-card" onclick="startScenario('job')"><div class="scene-icon" style="background:rgba(127,119,221,0.15)">💼</div><div><div class="scene-title">Job Interview</div><div class="scene-desc">HR se baat karo, apne aap ko present karo</div><span class="scene-tag">Intermediate</span></div></div>
+    <div class="scenario-card" onclick="startScenario('doctor')"><div class="scene-icon" style="background:rgba(29,158,117,0.15)">🏥</div><div><div class="scene-title">Doctor Visit</div><div class="scene-desc">Symptoms explain karo English mein</div><span class="scene-tag">Beginner</span></div></div>
+    <div class="scenario-card" onclick="startScenario('shopping')"><div class="scene-icon" style="background:rgba(239,159,39,0.15)">🛍️</div><div><div class="scene-title">Shopping / Bargaining</div><div class="scene-desc">Price negotiate karo, quality poochho</div><span class="scene-tag">Beginner</span></div></div>
+    <div class="scenario-card" onclick="startScenario('hotel')"><div class="scene-icon" style="background:rgba(212,83,126,0.15)">🏨</div><div><div class="scene-title">Hotel Check-in</div><div class="scene-desc">Reception pe baat karo, problems batao</div><span class="scene-tag">Intermediate</span></div></div>
+    <div class="scenario-card" onclick="startScenario('bank')"><div class="scene-icon" style="background:rgba(56,138,221,0.15)">🏦</div><div><div class="scene-title">Bank / Finance</div><div class="scene-desc">Account open karo, loan ke baare mein poochho</div><span class="scene-tag">Advanced</span></div></div>
+    <div class="scenario-card" onclick="startScenario('airport')"><div class="scene-icon" style="background:rgba(29,158,117,0.15)">✈️</div><div><div class="scene-title">Airport / Travel</div><div class="scene-desc">Check-in, boarding, customs mein baat karo</div><span class="scene-tag">Intermediate</span></div></div>
   </div>
-
 </div>
 
-<!-- INPUT AREA -->
+<!-- INPUT -->
 <div id="input-area">
   <textarea id="user-input" rows="1" placeholder="Hindi ya English mein likho..." onkeydown="handleKey(event)"></textarea>
   <div class="input-actions">
     <button class="round-btn" id="mic-btn" onclick="toggleMic()" title="Voice input"><i class="ti ti-microphone"></i></button>
-    <button class="round-btn" id="share-btn" onclick="shareApp()" title="WhatsApp pe share karo" style="background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.3);color:#25D366"><i class="ti ti-brand-whatsapp"></i></button>
     <button class="round-btn" id="clear-btn" onclick="clearChat()" title="Clear chat"><i class="ti ti-trash"></i></button>
-    <button class="round-btn" id="send-btn" onclick="sendMessage()" title="Send">➤</button>
+    <button class="round-btn" id="send-btn" onclick="sendMessage()">➤</button>
   </div>
 </div>
 
 <script>
-// ── SERVICE WORKER ──
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js")
-      .then(() => console.log("SW registered"))
-      .catch(e => console.log("SW error:", e));
-  });
-}
+// ── PWA ──
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='flex';});
+window.addEventListener('appinstalled',()=>{deferredPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';showXPPop('🎉 App install! +100 XP');addXP(100);});
+function installPWA(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt.userChoice.then(r=>{if(r.outcome==='accepted')addXP(100);deferredPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';});}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(e=>console.log('SW:',e));});}
 
-// ── PWA INSTALL ──
-let deferredPrompt = null;
-window.addEventListener("beforeinstallprompt", e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  const btn = document.getElementById("installBtn");
-  if (btn) btn.style.display = "flex";
-});
-window.addEventListener("appinstalled", () => {
-  deferredPrompt = null;
-  const btn = document.getElementById("installBtn");
-  if (btn) btn.style.display = "none";
-  showXPPop("🎉 App install ho gaya! +100 XP");
-});
-function installPWA() {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(r => {
-    if (r.outcome === "accepted") addXP(100);
-    deferredPrompt = null;
-    const btn = document.getElementById("installBtn");
-    if (btn) btn.style.display = "none";
-  });
-}
+// ── GROQ KEY ──
+const _k=atob(['Z3NrX3lRWEZjZFowYThoWlJ2ZlNpWUZzV0dkeWIzRll','wR25va2VyN2FpcXdvSW9vR2R3NkdzdGg='].join(''));
 
-// ── GROQ API KEY ──
-const _k = atob(['Z3NrX3lRWEZjZFowYThoWlJ2ZlNpWUZzV0dkeWIzRll','wR25va2VyN2FpcXdvSW9vR2R3NkdzdGg='].join(''));
-
-// ── 30 WORDS OF THE DAY ──
-const WOTD_LIST = [
-  {word:'Perseverance',meaning:'लगातार कोशिश करते रहना',eg:'"Her perseverance helped her clear the exam."'},
-  {word:'Articulate',meaning:'अपनी बात clearly express करना',eg:'"He is very articulate in meetings."'},
+// ── 30 WOTD ──
+const WOTD_LIST=[
+  {word:'Perseverance',meaning:'लगातार कोशिश करते रहना, हार न मानना',eg:'"Her perseverance helped her clear the exam."'},
+  {word:'Articulate',meaning:'अपनी बात clearly बोल पाना',eg:'"He is very articulate in meetings."'},
   {word:'Diligent',meaning:'मेहनती, लगन से काम करने वाला',eg:'"She is a diligent student."'},
   {word:'Empathy',meaning:'दूसरों का दर्द समझना',eg:'"Empathy makes you a better leader."'},
-  {word:'Resilient',meaning:'मुश्किलों से जल्दी उबरना',eg:'"Indians are very resilient people."'},
-  {word:'Eloquent',meaning:'बहुत अच्छे तरीके से बोलना',eg:'"She gave an eloquent speech."'},
+  {word:'Resilient',meaning:'मुश्किलों से जल्दी उबरने वाला',eg:'"Indians are very resilient people."'},
+  {word:'Eloquent',meaning:'बहुत अच्छे तरीके से बोलने वाला',eg:'"She gave an eloquent speech."'},
   {word:'Integrity',meaning:'ईमानदारी और नैतिकता',eg:'"He is known for his integrity."'},
   {word:'Proficient',meaning:'किसी काम में माहिर होना',eg:'"She is proficient in English."'},
-  {word:'Versatile',meaning:'हर काम में काम आने वाला',eg:'"He is a versatile employee."'},
-  {word:'Concise',meaning:'कम शब्दों में बात कहना',eg:'"Keep your email concise and clear."'},
-  {word:'Ambitious',meaning:'बड़े सपने देखने वाला',eg:'"She is ambitious and works hard."'},
-  {word:'Collaborate',meaning:'मिलकर काम करना',eg:'"We collaborate with the team daily."'},
+  {word:'Versatile',meaning:'हर काम में उपयोगी, बहुमुखी',eg:'"He is a versatile employee."'},
+  {word:'Concise',meaning:'कम शब्दों में स्पष्ट बात कहना',eg:'"Keep your email concise and clear."'},
+  {word:'Ambitious',meaning:'बड़े सपने देखने वाला, महत्वाकांक्षी',eg:'"She is ambitious and works hard."'},
+  {word:'Collaborate',meaning:'मिलकर काम करना, सहयोग करना',eg:'"We collaborate with the team daily."'},
   {word:'Negotiate',meaning:'बात करके हल निकालना',eg:'"He negotiated a better salary."'},
   {word:'Acknowledge',meaning:'किसी बात को स्वीकार करना',eg:'"Please acknowledge the email."'},
-  {word:'Initiative',meaning:'खुद से काम शुरू करना',eg:'"She took initiative in the project."'},
+  {word:'Initiative',meaning:'खुद से काम शुरू करने की इच्छाशक्ति',eg:'"She took initiative in the project."'},
   {word:'Comprehensive',meaning:'पूरा और विस्तृत',eg:'"Give a comprehensive report."'},
   {word:'Mandatory',meaning:'जरूरी, अनिवार्य',eg:'"Attendance is mandatory today."'},
   {word:'Efficient',meaning:'कम समय में अच्छा काम करना',eg:'"She is an efficient worker."'},
-  {word:'Transparent',meaning:'खुला और स्पष्ट',eg:'"Be transparent with your team."'},
+  {word:'Transparent',meaning:'खुला और स्पष्ट, पारदर्शी',eg:'"Be transparent with your team."'},
   {word:'Deadline',meaning:'काम पूरा करने की आखिरी तारीख',eg:'"Submit before the deadline."'},
   {word:'Feedback',meaning:'किसी के काम पर राय देना',eg:'"Please give me feedback on this."'},
   {word:'Benchmark',meaning:'मापदंड, तुलना का आधार',eg:'"Set a benchmark for quality."'},
-  {word:'Leverage',meaning:'किसी चीज का फायदा उठाना',eg:'"Leverage your skills wisely."'},
-  {word:'Eloquence',meaning:'बोलने की सुंदर कला',eg:'"His eloquence impressed everyone."'},
-  {word:'Persistent',meaning:'हार न मानने वाला',eg:'"Be persistent in your efforts."'},
+  {word:'Leverage',meaning:'किसी चीज़ का फायदा उठाना',eg:'"Leverage your skills wisely."'},
+  {word:'Persistent',meaning:'हार न मानने वाला, दृढ़',eg:'"Be persistent in your efforts."'},
   {word:'Pragmatic',meaning:'व्यावहारिक सोच रखना',eg:'"Take a pragmatic approach."'},
   {word:'Adaptable',meaning:'हर हाल में ढल जाने वाला',eg:'"Stay adaptable in new situations."'},
   {word:'Courteous',meaning:'विनम्र और शिष्ट',eg:'"Always be courteous to clients."'},
   {word:'Fluent',meaning:'धाराप्रवाह बोलना',eg:'"She speaks fluent English."'},
-  {word:'Proactive',meaning:'पहले से सोचकर काम करना',eg:'"Be proactive, not reactive."'}
+  {word:'Proactive',meaning:'पहले से सोचकर काम करना',eg:'"Be proactive, not reactive."'},
+  {word:'Consistent',meaning:'हमेशा एक जैसा अच्छा करते रहना',eg:'"Consistent practice makes you fluent."'}
 ];
 
 // ── STATE ──
-let userData = {};
-let currentMode = 'chat';
-let messages = [];
-let isRecording = false;
-let recognition = null;
-let isLight = false;
+let userData={};let currentMode='chat';let messages=[];let isRecording=false;let recognition=null;let isLight=false;let todayWordGlobal={};
 
-// ── STORAGE HELPERS ──
-function save(key, val) { try { localStorage.setItem('es_'+key, JSON.stringify(val)); } catch(e){} }
-function load(key, def) { try { const v = localStorage.getItem('es_'+key); return v !== null ? JSON.parse(v) : def; } catch(e){ return def; } }
+// ── STORAGE ──
+function save(k,v){try{localStorage.setItem('es_'+k,JSON.stringify(v));}catch(e){}}
+function load(k,d){try{const v=localStorage.getItem('es_'+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
 
-// ── LOAD / INIT USER DATA ──
-function loadUserData() {
-  userData = load('user', {
-    name: '', level: '', xp: 0, wordsLearned: 0, msgCount: 0,
-    streak: 0, lastDate: '', weekActivity: [0,0,0,0,0,0,0],
-    chatHistory: [], badges: []
-  });
-}
+function loadUserData(){userData=load('user',{name:'',level:'',xp:0,wordsLearned:0,msgCount:0,streak:0,lastDate:'',weekActivity:[0,0,0,0,0,0,0],chatHistory:[],badges:[],shareCount:0});}
+function saveUserData(){save('user',userData);}
 
-function saveUserData() { save('user', userData); }
-
-// ── XP & LEVELS ──
-const XP_PER_LEVEL = 200;
-function getLevel(xp) { return Math.floor(xp / XP_PER_LEVEL) + 1; }
-function getLevelProgress(xp) { return ((xp % XP_PER_LEVEL) / XP_PER_LEVEL) * 100; }
-
-function addXP(amount) {
-  userData.xp += amount;
-  saveUserData();
-  updateStatsUI();
-  showXPPop('+' + amount + ' XP!');
-}
-
-function showXPPop(text) {
-  const el = document.createElement('div');
-  el.className = 'xp-pop'; el.textContent = text;
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 2100);
-}
+// ── XP — 100 per level ──
+const XP_PER_LEVEL=100;
+function getLevel(xp){return Math.floor(xp/XP_PER_LEVEL)+1;}
+function getLevelPct(xp){return((xp%XP_PER_LEVEL)/XP_PER_LEVEL)*100;}
+function addXP(n){userData.xp+=n;saveUserData();updateStatsUI();showXPPop('+'+n+' XP!');}
+function showXPPop(t){const el=document.createElement('div');el.className='xp-pop';el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),2100);}
 
 // ── STREAK ──
-function updateStreak() {
-  const today = new Date().toDateString();
-  if (userData.lastDate === today) return;
-  const yesterday = new Date(Date.now() - 86400000).toDateString();
-  if (userData.lastDate === yesterday) {
-    userData.streak += 1;
-  } else if (userData.lastDate !== today) {
-    userData.streak = 1;
-  }
-  userData.lastDate = today;
-  const dow = new Date().getDay(); // 0=Sun
-  userData.weekActivity[dow] = (userData.weekActivity[dow] || 0) + 1;
+function updateStreak(){
+  const today=new Date().toDateString();
+  if(userData.lastDate===today)return;
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  userData.streak=userData.lastDate===yesterday?userData.streak+1:1;
+  userData.lastDate=today;
+  const dow=new Date().getDay();
+  userData.weekActivity[dow]=(userData.weekActivity[dow]||0)+1;
   saveUserData();
 }
 
 // ── BADGES ──
-const ALL_BADGES = [
-  { id:'first_msg', icon:'🗣️', name:'Pehla Qadam', desc:'Pehla message bheja', condition: u => u.msgCount >= 1 },
-  { id:'streak3', icon:'🔥', name:'3-Day Streak', desc:'3 din lagatar aaye', condition: u => u.streak >= 3 },
-  { id:'streak7', icon:'🏅', name:'7-Day Streak', desc:'7 din lagatar aaye', condition: u => u.streak >= 7 },
-  { id:'streak30', icon:'🏆', name:'30-Day Legend', desc:'30 din streak', condition: u => u.streak >= 30 },
-  { id:'words50', icon:'📚', name:'Word Collector', desc:'50 responses paye', condition: u => u.wordsLearned >= 50 },
-  { id:'words100', icon:'📖', name:'Word Master', desc:'100 responses paye', condition: u => u.wordsLearned >= 100 },
-  { id:'xp500', icon:'⭐', name:'500 XP Club', desc:'500 XP kamaye', condition: u => u.xp >= 500 },
-  { id:'xp1000', icon:'💫', name:'1000 XP Legend', desc:'1000 XP kamaye', condition: u => u.xp >= 1000 },
-  { id:'msgs10', icon:'💬', name:'Chatty', desc:'10 messages bheje', condition: u => u.msgCount >= 10 },
-  { id:'msgs50', icon:'🎤', name:'Speaker', desc:'50 messages bheje', condition: u => u.msgCount >= 50 },
+const ALL_BADGES=[
+  {id:'first_msg',icon:'🗣️',name:'Pehla Qadam',desc:'Pehla message bheja',fn:u=>u.msgCount>=1},
+  {id:'streak3',icon:'🔥',name:'3-Day Streak',desc:'3 din lagatar aaye',fn:u=>u.streak>=3},
+  {id:'streak7',icon:'🏅',name:'7-Day Streak',desc:'7 din lagatar aaye',fn:u=>u.streak>=7},
+  {id:'streak30',icon:'🏆',name:'30-Day Legend',desc:'30 din streak chahiye',fn:u=>u.streak>=30},
+  {id:'words25',icon:'📖',name:'Curious Learner',desc:'25 AI responses mile',fn:u=>u.wordsLearned>=25},
+  {id:'words100',icon:'📚',name:'Word Master',desc:'100 AI responses mile',fn:u=>u.wordsLearned>=100},
+  {id:'xp200',icon:'⭐',name:'200 XP Club',desc:'200 XP kamaye',fn:u=>u.xp>=200},
+  {id:'xp1000',icon:'💫',name:'1000 XP Legend',desc:'1000 XP kamaye',fn:u=>u.xp>=1000},
+  {id:'msgs20',icon:'💬',name:'Chatty',desc:'20 messages bheje',fn:u=>u.msgCount>=20},
+  {id:'share1',icon:'🤝',name:'Ambassador',desc:'App share kiya',fn:u=>u.shareCount>=1},
 ];
+function checkBadges(){let got=false;ALL_BADGES.forEach(b=>{if(!userData.badges.includes(b.id)&&b.fn(userData)){userData.badges.push(b.id);got=true;showXPPop('🏅 Badge: '+b.name);}});if(got)saveUserData();}
+function renderBadges(){const g=document.getElementById('badge-grid');if(!g)return;g.innerHTML=ALL_BADGES.map(b=>{const u=userData.badges.includes(b.id);return`<div class="badge-card ${u?'unlocked':'locked'}"><div class="badge-icon">${b.icon}</div><div class="badge-name">${b.name}</div><div class="badge-desc">${b.desc}</div></div>`;}).join('');}
 
-function checkBadges() {
-  let newBadge = false;
-  ALL_BADGES.forEach(b => {
-    if (!userData.badges.includes(b.id) && b.condition(userData)) {
-      userData.badges.push(b.id);
-      newBadge = true;
-      showXPPop('🏅 Badge unlocked: ' + b.name);
-    }
-  });
-  if (newBadge) saveUserData();
-}
-
-function renderBadges() {
-  const grid = document.getElementById('badge-grid');
-  if (!grid) return;
-  grid.innerHTML = ALL_BADGES.map(b => {
-    const unlocked = userData.badges.includes(b.id);
-    return `<div class="badge-card ${unlocked?'unlocked':'locked'}">
-      <div class="badge-icon">${b.icon}</div>
-      <div class="badge-name">${b.name}</div>
-      <div class="badge-desc">${b.desc}</div>
-    </div>`;
-  }).join('');
-}
-
-// ── UI UPDATES ──
-function updateStatsUI() {
-  const lvl = getLevel(userData.xp);
-  const pct = getLevelProgress(userData.xp);
-  document.getElementById('streak-count').textContent = '🔥 ' + userData.streak;
-  document.getElementById('words-count').textContent = '📚 ' + userData.wordsLearned;
-  document.getElementById('xp-count').textContent = '⭐ ' + userData.xp;
-  document.getElementById('streak-label').textContent = '🔥 ' + userData.streak + '-day streak!';
-  document.getElementById('level-label').textContent = '⭐ ' + userData.xp + ' XP — Level ' + lvl;
-  document.getElementById('prog-fill').style.width = pct + '%';
-  // streak dots (last 7 days)
-  const dots = document.getElementById('streak-dots');
-  dots.innerHTML = '';
-  for (let i = 0; i < 7; i++) {
-    const d = document.createElement('div');
-    d.className = 'sdot' + (userData.weekActivity[i] > 0 ? ' done' : '');
-    dots.appendChild(d);
-  }
+// ── STATS UI ──
+function updateStatsUI(){
+  const lvl=getLevel(userData.xp);const pct=getLevelPct(userData.xp);
+  document.getElementById('streak-count').textContent='🔥 '+userData.streak;
+  document.getElementById('words-count').textContent='📚 '+userData.wordsLearned;
+  document.getElementById('xp-count').textContent='⭐ '+userData.xp;
+  document.getElementById('streak-label').textContent='🔥 '+userData.streak+'-day streak!';
+  document.getElementById('level-label').textContent='⭐ '+userData.xp+' XP — Level '+lvl;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  // streak dots
+  const dots=document.getElementById('streak-dots');dots.innerHTML='';
+  for(let i=0;i<7;i++){const d=document.createElement('div');d.className='sdot'+(userData.weekActivity[i]>0?' done':'');dots.appendChild(d);}
   // progress section
-  document.getElementById('p-words').textContent = userData.wordsLearned;
-  document.getElementById('p-msgs').textContent = userData.msgCount;
-  document.getElementById('p-streak').textContent = userData.streak;
-  document.getElementById('p-xp').textContent = userData.xp;
-  document.getElementById('p-level-label').textContent = 'Level ' + lvl;
-  document.getElementById('p-level-pct').textContent = Math.round(pct) + '%';
-  document.getElementById('p-prog-fill').style.width = pct + '%';
-  renderWeekChart();
+  if(document.getElementById('p-words')){
+    document.getElementById('p-words').textContent=userData.wordsLearned;
+    document.getElementById('p-msgs').textContent=userData.msgCount;
+    document.getElementById('p-streak').textContent=userData.streak;
+    document.getElementById('p-xp').textContent=userData.xp;
+    document.getElementById('p-level-label').textContent='Level '+lvl;
+    document.getElementById('p-level-pct').textContent=Math.round(pct)+'%';
+    document.getElementById('p-prog-fill').style.width=pct+'%';
+    renderWeekChart();
+  }
 }
 
-function renderWeekChart() {
-  const chart = document.getElementById('week-chart');
-  if (!chart) return;
-  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const max = Math.max(...userData.weekActivity, 1);
-  chart.innerHTML = userData.weekActivity.map((v,i) => {
-    const h = Math.max(10, (v/max)*100);
-    return `<div class="bar-wrap">
-      <div class="bar" style="height:${h}%;background:${v>0?'#7F77DD':'rgba(255,255,255,0.1)'}"></div>
-      <div class="bar-day">${days[i]}</div>
-    </div>`;
-  }).join('');
+function renderWeekChart(){
+  const chart=document.getElementById('week-chart');if(!chart)return;
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const max=Math.max(...userData.weekActivity,1);
+  chart.innerHTML=userData.weekActivity.map((v,i)=>`<div class="bar-wrap"><div class="bar" style="height:${Math.max(8,(v/max)*100)}%;background:${v>0?'#7F77DD':'rgba(255,255,255,0.1)'}"></div><div class="bar-day">${days[i]}</div></div>`).join('');
 }
 
-// ── WORD OF THE DAY ──
-function setWOTD() {
-  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
-  const w = WOTD_LIST[dayOfYear % WOTD_LIST.length];
-  document.getElementById('wotd-word').textContent = w.word;
-  document.getElementById('wotd-meaning').textContent = w.meaning;
-  document.getElementById('wotd-eg').textContent = w.eg;
+// ── WOTD ──
+function setWOTD(){
+  const doy=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000);
+  const w=WOTD_LIST[doy%WOTD_LIST.length];
+  todayWordGlobal=w;
+  document.getElementById('wotd-word').textContent=w.word;
+  document.getElementById('wotd-meaning').textContent=w.meaning;
+  document.getElementById('wotd-eg').textContent=w.eg;
   return w;
 }
 
+// ── SHARE ──
+function openSharePopup(){document.getElementById('share-popup').classList.remove('hidden');}
+function closeSharePopup(){document.getElementById('share-popup').classList.add('hidden');}
+function shareWhatsApp(){
+  userData.shareCount=(userData.shareCount||0)+1;saveUserData();checkBadges();
+  const txt=encodeURIComponent(`🎓 *EnglishSaathi* — Free mein English seekho AI se!\n\nHindi mein poochho, English mein seekho 🚀\n\nMain use kar raha/rahi hoon aur bahut kuch seekh raha/rahi hoon!\n\n👉 https://english-saathi.vercel.app\n\nBilkul FREE! Apne dosto ko bhi bhejo 😊`);
+  window.open('https://wa.me/?text='+txt,'_blank');
+  closeSharePopup();addXP(20);showXPPop('🤝 Share kiya! +20 XP');
+}
+function copyLink(){
+  navigator.clipboard.writeText('https://english-saathi.vercel.app').then(()=>{showXPPop('✅ Link copied!');closeSharePopup();}).catch(()=>{alert('Link: https://english-saathi.vercel.app');});
+  userData.shareCount=(userData.shareCount||0)+1;saveUserData();checkBadges();
+}
+function shareWordOfDay(){
+  const w=todayWordGlobal;
+  const txt=encodeURIComponent(`📅 *EnglishSaathi — Word of the Day*\n\n🔤 *${w.word}*\n📖 ${w.meaning}\n💡 ${w.eg}\n\nAur aisa words daily sikhne ke liye:\n👉 https://english-saathi.vercel.app\n\nBilkul FREE! 🎓`);
+  window.open('https://wa.me/?text='+txt,'_blank');
+}
+
 // ── ONBOARDING ──
-let selectedLevel = '';
-function selectLevel(lvl, el) {
-  selectedLevel = lvl;
-  document.querySelectorAll('.ob-level').forEach(e => e.classList.remove('selected'));
-  el.classList.add('selected');
-}
-function completeOnboarding() {
-  const nameEl = document.getElementById('ob-name');
-  const name = nameEl.value.trim() || 'Dost';
-  if (!selectedLevel) { alert('Apna level select karo!'); return; }
-  userData.name = name;
-  userData.level = selectedLevel;
-  saveUserData();
+let selectedLevel='';
+function selectLevel(lvl,el){selectedLevel=lvl;document.querySelectorAll('.ob-level').forEach(e=>e.classList.remove('selected'));el.classList.add('selected');}
+function completeOnboarding(){
+  const n=document.getElementById('ob-name').value.trim()||'Dost';
+  if(!selectedLevel){alert('Apna level select karo!');return;}
+  userData.name=n;userData.level=selectedLevel;saveUserData();
   document.getElementById('onboarding').classList.add('hidden');
-  document.getElementById('user-greeting').textContent = 'Namaste, ' + name + '! 👋';
-  const todayWord = setWOTD();
-  updateStatsUI();
-  updateStreak();
-  saveUserData();
-  startChat(todayWord);
-}
-
-// ── CHAT HISTORY ──
-function saveChatHistory() {
-  userData.chatHistory = messages.slice(-30);
-  saveUserData();
-}
-
-function loadChatHistory() {
-  if (userData.chatHistory && userData.chatHistory.length > 0) {
-    messages = userData.chatHistory;
-    const chat = document.getElementById('chat');
-    messages.forEach(m => {
-      if (m.role === 'user') {
-        const row = document.createElement('div');
-        row.className = 'msg-row user';
-        row.innerHTML = `<div class="bubble user">${formatText(m.content)}</div>`;
-        chat.appendChild(row);
-      } else if (m.role === 'assistant') {
-        const row = document.createElement('div');
-        row.className = 'msg-row';
-        row.innerHTML = `<div class="avatar">🎓</div><div class="bubble bot">${formatText(m.content)}</div>`;
-        chat.appendChild(row);
-      }
-    });
-    chat.scrollTop = chat.scrollHeight;
-  }
-}
-
-// ── CLEAR CHAT ──
-function clearChat() {
-  if (!confirm('Chat clear karein?')) return;
-  messages = [];
-  userData.chatHistory = [];
-  saveUserData();
-  document.getElementById('chat').innerHTML = '';
-  const todayWord = setWOTD();
-  startChat(todayWord);
+  document.getElementById('user-greeting').textContent='Namaste, '+n+'! 👋';
+  const w=setWOTD();updateStreak();saveUserData();updateStatsUI();
+  startChat(w);addXP(50);checkBadges();
+  // show share popup after 3 messages
+  setTimeout(()=>openSharePopup(),30000);
 }
 
 // ── THEME ──
-function toggleTheme() {
-  isLight = !isLight;
-  document.body.classList.toggle('light', isLight);
-  document.querySelector('#themeBtn i').className = isLight ? 'ti ti-moon' : 'ti ti-sun';
-  save('theme', isLight);
-}
+function toggleTheme(){isLight=!isLight;document.body.classList.toggle('light',isLight);document.querySelector('#themeBtn i').className=isLight?'ti ti-moon':'ti ti-sun';save('theme',isLight);}
 
 // ── MIC ──
-function toggleMic() {
-  const btn = document.getElementById('mic-btn');
-  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-    addBotMsg('⚠️ Voice input ke liye Chrome browser use karein!'); return;
-  }
-  if (isRecording) {
-    recognition && recognition.stop(); isRecording = false;
-    btn.classList.remove('recording');
-    btn.querySelector('i').className = 'ti ti-microphone'; return;
-  }
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SR();
-  recognition.lang = 'en-IN'; recognition.continuous = false; recognition.interimResults = false;
-  recognition.onresult = e => { document.getElementById('user-input').value = e.results[0][0].transcript; };
-  recognition.onend = () => {
-    isRecording = false; btn.classList.remove('recording');
-    btn.querySelector('i').className = 'ti ti-microphone';
-  };
-  recognition.start(); isRecording = true;
-  btn.classList.add('recording');
-  btn.querySelector('i').className = 'ti ti-microphone-off';
+function toggleMic(){
+  const btn=document.getElementById('mic-btn');
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){addBotMsg('⚠️ Voice input ke liye Chrome use karein!');return;}
+  if(isRecording){recognition&&recognition.stop();isRecording=false;btn.classList.remove('recording');btn.querySelector('i').className='ti ti-microphone';return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recognition=new SR();recognition.lang='en-IN';recognition.continuous=false;recognition.interimResults=false;
+  recognition.onresult=e=>{document.getElementById('user-input').value=e.results[0][0].transcript;};
+  recognition.onend=()=>{isRecording=false;btn.classList.remove('recording');btn.querySelector('i').className='ti ti-microphone';};
+  recognition.start();isRecording=true;btn.classList.add('recording');btn.querySelector('i').className='ti ti-microphone-off';
 }
 
-// ── MODE PROMPTS ──
-function buildPrompt(mode) {
-  const todayWord = setWOTD();
-  const BASE = `You are "EnglishSaathi" — a helpful AI English tutor for Indian users.
-User's name: ${userData.name || 'User'}. Level: ${userData.level || 'beginner'}.
-CRITICAL RULE: ALWAYS directly answer what the user is asking. Never ignore their question.
-- Answer the user's question FIRST, then optionally add a tip.
-- Communicate in Hinglish (Hindi+English mix) — warm, friendly, like an elder sibling.
-- Understand Hindi, Hinglish, and Indian languages fluently.
-- Correct mistakes gently AFTER answering: "Ek small tip — aise bolenge: [correct]"
-- Use Indian examples: chai, cricket, Bollywood, festivals, offices.
-- Keep responses concise. Do not lecture when user asks a simple question.
-- Today's word of the day: ${todayWord.word} (${todayWord.meaning}) — mention only if user asks or it fits naturally.`;
-
-  const modes = {
-    chat: BASE + `\nMode: Free chat. Answer whatever the user asks directly. Be conversational.`,
-    lesson: BASE + `\nMode: Structured lesson. Answer specific questions directly first. If lesson requested, ask level/topic. Format: Topic → Theory → Examples → Practice. One concept at a time.`,
-    vocab: BASE + `\nMode: Vocabulary. If user asks about a word, explain immediately: Hindi meaning → Pronunciation → 2-3 examples → quick quiz. If no word given, suggest useful words.`,
-    grammar: BASE + `\nMode: Grammar. Answer grammar questions directly. Format: Rule (simple Hindi) → Formula → Correct examples → Common Indian mistakes → Practice exercise.`,
-    interview: BASE + `\nMode: Interview prep. If user gives an answer, give feedback immediately. For mock interview: ask one question at a time, feedback after each (good points + improvement + better version).`,
-    gd: BASE + `\nMode: GD practice. If user shares points, evaluate immediately: Content, Language, Structure (/10 each). Teach useful GD phrases. Suggest a topic if none given.`,
-    pi: BASE + `\nMode: Personal Interview practice. One question at a time. Feedback after each answer.`,
-    spoken: BASE + `\nMode: Spoken English. Focus on pronunciation, phrases, fluency. Correct spoken errors naturally.`,
-    email: BASE + `\nMode: Email writing. If user describes a situation, write the email immediately. Keep explanations simple.`,
-    pronunciation: BASE + `\nMode: Pronunciation. For any word: ❌ Common Indian mistake → ✅ Correct (Hindi script) → tip.`,
-    quiz: BASE + `\nMode: Quiz. One question at a time. Wait for answer before next. Give score. Fun KBC style.`,
-    roleplay_job: BASE + `\nMode: Job Interview Roleplay. You are the interviewer. One question at a time. Give brief feedback after each answer, then ask next question.`,
-    roleplay_doctor: BASE + `\nMode: Doctor Visit Roleplay. You are the doctor. Respond naturally. Note correct English medical phrases briefly.`,
-    roleplay_shopping: BASE + `\nMode: Shopping Roleplay. You are the shopkeeper. Respond naturally. Gently correct English errors in the flow.`,
-    roleplay_hotel: BASE + `\nMode: Hotel Check-in Roleplay. You are the receptionist. Respond naturally.`,
-    roleplay_bank: BASE + `\nMode: Bank Visit Roleplay. You are the bank manager. Respond naturally.`,
-    roleplay_airport: BASE + `\nMode: Airport Roleplay. You are the airline staff. Respond naturally.`,
+// ── PROMPTS ──
+function buildPrompt(mode){
+  const w=todayWordGlobal;
+  const BASE=`You are "EnglishSaathi" — a helpful AI English tutor for Indian users.
+User name: ${userData.name||'User'}. Level: ${userData.level||'Beginner'}.
+RULE #1: ALWAYS directly answer what the user is asking. Never ignore their question.
+RULE #2: Answer FIRST, then optionally add a short tip.
+RULE #3: Communicate in Hinglish (Hindi+English mix). Warm, friendly, like an elder sibling.
+RULE #4: Understand Hindi, Hinglish, and Indian languages.
+RULE #5: Correct mistakes gently AFTER answering: "Ek tip — aise bolenge: [correct]"
+RULE #6: Use Indian examples: chai, cricket, Bollywood, office, festivals.
+RULE #7: Keep responses concise. No unnecessary lecturing.
+Today's word: ${w.word||'Perseverance'} (${w.meaning||'लगातार कोशिश करना'}) — mention only if it fits naturally.`;
+  const m={
+    chat:BASE+'\nMode: Free chat. Answer directly. Be conversational, not lecture-style.',
+    lesson:BASE+'\nMode: Lesson. Answer specific questions directly. For lesson: ask topic, explain simply, give examples, then one practice exercise.',
+    vocab:BASE+'\nMode: Vocabulary. For any word asked: Hindi meaning → pronunciation → 2 example sentences → quick quiz. If no word given, suggest a useful one.',
+    grammar:BASE+'\nMode: Grammar. Answer directly. Format: Rule (simple Hindi) → examples → common Indian mistake → one exercise.',
+    interview:BASE+'\nMode: Interview prep. Give immediate feedback on answers. For mock: one question at a time, feedback after each (good + improve + better version).',
+    gd:BASE+'\nMode: GD practice. Evaluate user points immediately: Content, Language, Structure (/10). Teach GD phrases.',
+    pi:BASE+'\nMode: PI practice. One question at a time. Feedback after each answer.',
+    spoken:BASE+'\nMode: Spoken English. Focus on pronunciation, phrases, fluency. Correct naturally.',
+    email:BASE+'\nMode: Email writing. Write the email immediately when user describes situation.',
+    pronunciation:BASE+'\nMode: Pronunciation. For any word: ❌ Indian common mistake → ✅ Correct (in Hindi script) → tip.',
+    quiz:BASE+'\nMode: Quiz. One question at a time. KBC style. Give score. Explain answers.',
+    roleplay_job:BASE+'\nMode: Job Interview Roleplay. You are interviewer. One question at a time. Brief feedback after each answer, then next question.',
+    roleplay_doctor:BASE+'\nMode: Doctor Roleplay. You are doctor. Respond naturally. Note correct medical English phrases briefly.',
+    roleplay_shopping:BASE+'\nMode: Shopping Roleplay. You are shopkeeper. Respond naturally. Correct English gently.',
+    roleplay_hotel:BASE+'\nMode: Hotel Roleplay. You are receptionist. Respond naturally.',
+    roleplay_bank:BASE+'\nMode: Bank Roleplay. You are bank manager. Respond naturally.',
+    roleplay_airport:BASE+'\nMode: Airport Roleplay. You are airline staff. Respond naturally.',
   };
-  return modes[mode] || modes.chat;
+  return m[mode]||m.chat;
 }
 
-const MODE_STARTERS = {
-  chat: (name, level) => `Namaste **${name}**! 🙏 Main hoon aapka EnglishSaathi!\n\nAapka level **${level}** hai — bilkul sahi jagah aaye ho!\n\nAaj kya sikhna hai? Koi bhi sawaal poochho — Hindi mein bhi theek hai! 😊`,
-  lesson: () => `📚 **Coaching Class mein swagat!**\n\nKaunsa topic chahiye?\n1️⃣ Tenses\n2️⃣ Articles (a/an/the)\n3️⃣ Speaking skills\n4️⃣ Writing skills\n5️⃣ Apna topic batao\n\nBatao — class shuru! 📖`,
-  vocab: () => `📝 **Vocabulary Builder!**\n\nKonse words sikhne hain?\n1️⃣ Daily life\n2️⃣ Office/Professional\n3️⃣ Exam (GRE/IELTS)\n4️⃣ Surprise me!\n\nBatao — shuru! 🔤`,
-  grammar: () => `✍️ **Grammar Class!**\n\nKaunsa topic?\n1️⃣ Tenses\n2️⃣ Articles\n3️⃣ Prepositions\n4️⃣ Active/Passive\n5️⃣ Direct/Indirect\n\nBatao! 📚`,
-  interview: () => `🎯 **Interview Prep!**\n\n1️⃣ Job interview (Fresher)\n2️⃣ Job interview (Experienced)\n3️⃣ MBA/College\n\nBatao — mock interview shuru! 💼`,
-  gd: () => `🗣️ **GD Practice!**\n\nTopic choose karo:\n1️⃣ Technology\n2️⃣ Current Affairs\n3️⃣ Abstract\n4️⃣ Case-based\n\nBatao — GD start! 📢`,
-  pi: () => `👔 **PI Practice!**\n\nKis ke liye?\n1️⃣ MBA\n2️⃣ Job\n3️⃣ College admission\n\nBatao! 🎓`,
-  spoken: () => `🎤 **Spoken English!**\n\n1️⃣ Roleplay practice\n2️⃣ Free conversation\n3️⃣ Pronunciation fixing\n4️⃣ Daily phrases\n\nBatao! 🚀`,
-  email: () => `📧 **Email Writing!**\n\n1️⃣ Leave application\n2️⃣ Job application\n3️⃣ Follow-up\n4️⃣ Complaint/Request\n5️⃣ Apni situation batao\n\nBatao! ✍️`,
-  pronunciation: () => `🔊 **Pronunciation Clinic!**\n\nKaunsa area?\n1️⃣ V vs W\n2️⃣ TH sound\n3️⃣ Word stress\n4️⃣ Specific word batao\n\nShuru! 👄`,
-  quiz: () => `🧠 **Quiz Time — KBC Style!**\n\n1️⃣ Vocabulary\n2️⃣ Grammar\n3️⃣ Translation\n4️⃣ Mixed\n\nDifficulty: A) Easy 🟢  B) Medium 🟡  C) Hard 🔴\n\nBatao! 🎯`
+const MODE_STARTERS={
+  chat:(n,l)=>`Namaste **${n}**! 🙏 Main hoon aapka EnglishSaathi!\n\nAapka level **${l}** hai — bilkul sahi jagah aaye ho! 😊\n\nAaj kya sikhna hai? Koi bhi sawaal poochho — Hindi mein bhi theek hai! 🚀`,
+  lesson:()=>`📚 **Coaching Class mein swagat!**\n\nKaunsa topic chahiye?\n1️⃣ Tenses\n2️⃣ Articles (a/an/the)\n3️⃣ Speaking skills\n4️⃣ Writing skills\n5️⃣ Apna topic batao\n\nBatao — class shuru! 📖`,
+  vocab:()=>`📝 **Vocabulary Builder!**\n\nKonse words sikhne hain?\n1️⃣ Daily life\n2️⃣ Office/Professional\n3️⃣ Exam (GRE/IELTS)\n4️⃣ Surprise me!\n\nBatao! 🔤`,
+  grammar:()=>`✍️ **Grammar Class!**\n\nKaunsa topic?\n1️⃣ Tenses\n2️⃣ Articles\n3️⃣ Prepositions\n4️⃣ Active/Passive\n5️⃣ Direct/Indirect\n\nBatao! 📚`,
+  interview:()=>`🎯 **Interview Prep!**\n\n1️⃣ Job interview (Fresher)\n2️⃣ Job interview (Experienced)\n3️⃣ MBA/College\n\nBatao — mock shuru! 💼`,
+  gd:()=>`🗣️ **GD Practice!**\n\n1️⃣ Technology\n2️⃣ Current Affairs\n3️⃣ Abstract\n4️⃣ Case-based\n\nBatao — GD start! 📢`,
+  pi:()=>`👔 **PI Practice!**\n\n1️⃣ MBA\n2️⃣ Job\n3️⃣ College admission\n\nBatao! 🎓`,
+  spoken:()=>`🎤 **Spoken English!**\n\n1️⃣ Roleplay\n2️⃣ Free conversation\n3️⃣ Pronunciation\n4️⃣ Daily phrases\n\nBatao! 🚀`,
+  email:()=>`📧 **Email Writing!**\n\n1️⃣ Leave application\n2️⃣ Job application\n3️⃣ Follow-up\n4️⃣ Complaint/Request\n5️⃣ Apni situation batao\n\nBatao! ✍️`,
+  pronunciation:()=>`🔊 **Pronunciation Clinic!**\n\n1️⃣ V vs W\n2️⃣ TH sound\n3️⃣ Word stress\n4️⃣ Specific word batao\n\nShuru! 👄`,
+  quiz:()=>`🧠 **Quiz — KBC Style!**\n\n1️⃣ Vocabulary\n2️⃣ Grammar\n3️⃣ Translation\n4️⃣ Mixed\n\nDifficulty: A) Easy 🟢  B) Medium 🟡  C) Hard 🔴\n\nBatao! 🎯`
 };
 
-// ── MODE SWITCH ──
-function setMode(mode, btn) {
-  currentMode = mode; messages = [];
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+function setMode(mode,btn){
+  currentMode=mode;messages=[];
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('chat').innerHTML = '';
-  document.getElementById('chat').style.display = 'flex';
-  document.getElementById('input-area').style.display = 'flex';
+  document.getElementById('chat').innerHTML='';
+  document.getElementById('chat').style.display='flex';
+  document.getElementById('input-area').style.display='flex';
   document.getElementById('special-section').classList.remove('visible');
-  document.getElementById('special-section').querySelectorAll('[id^="sec-"]').forEach(s => s.style.display='none');
-  const starter = MODE_STARTERS[mode];
-  addBotMsg(starter ? starter(userData.name, userData.level) : '');
+  document.getElementById('special-section').querySelectorAll('[id^="sec-"]').forEach(s=>s.style.display='none');
+  const s=MODE_STARTERS[mode];
+  addBotMsg(s?s(userData.name,userData.level):'');
 }
 
-function showSpecial(name, btn) {
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+function showSpecial(name,btn){
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('chat').style.display = 'none';
-  document.getElementById('input-area').style.display = 'none';
+  document.getElementById('chat').style.display='none';
+  document.getElementById('input-area').style.display='none';
   document.getElementById('special-section').classList.add('visible');
-  document.getElementById('special-section').querySelectorAll('[id^="sec-"]').forEach(s => s.style.display='none');
-  document.getElementById('sec-'+name).style.display = 'block';
-  if (name === 'badges') renderBadges();
-  if (name === 'progress') updateStatsUI();
+  document.getElementById('special-section').querySelectorAll('[id^="sec-"]').forEach(s=>s.style.display='none');
+  document.getElementById('sec-'+name).style.display='block';
+  if(name==='badges')renderBadges();
+  if(name==='progress')updateStatsUI();
 }
 
-function startScenario(type) {
-  const starters = {
-    job: `🎭 **Roleplay: Job Interview!**\n\nMain interviewer hoon. Aap candidate hain.\n\n**"Please tell me about yourself."**`,
-    doctor: `🎭 **Roleplay: Doctor Visit!**\n\nMain doctor hoon.\n\n**"Good morning! What brings you here today?"**`,
-    shopping: `🎭 **Roleplay: Shopping!**\n\nMain shopkeeper hoon.\n\n**"Welcome! What are you looking for today?"**`,
-    hotel: `🎭 **Roleplay: Hotel Check-in!**\n\nMain receptionist hoon.\n\n**"Good evening! Do you have a reservation?"**`,
-    bank: `🎭 **Roleplay: Bank Visit!**\n\nMain bank manager hoon.\n\n**"Good morning! How can I assist you today?"**`,
-    airport: `🎭 **Roleplay: Airport!**\n\nMain airline staff hoon.\n\n**"Good morning! May I see your passport please?"**`
+function startScenario(type){
+  const s={
+    job:`🎭 **Roleplay: Job Interview!**\n\nMain interviewer hoon.\n\n**"Please tell me about yourself."**`,
+    doctor:`🎭 **Roleplay: Doctor Visit!**\n\nMain doctor hoon.\n\n**"Good morning! What brings you here today?"**`,
+    shopping:`🎭 **Roleplay: Shopping!**\n\nMain shopkeeper hoon.\n\n**"Welcome! What are you looking for today?"**`,
+    hotel:`🎭 **Roleplay: Hotel Check-in!**\n\nMain receptionist hoon.\n\n**"Good evening! Do you have a reservation?"**`,
+    bank:`🎭 **Roleplay: Bank Visit!**\n\nMain bank manager hoon.\n\n**"Good morning! How can I assist you today?"**`,
+    airport:`🎭 **Roleplay: Airport!**\n\nMain airline staff hoon.\n\n**"Good morning! May I see your passport please?"**`
   };
-  currentMode = 'roleplay_' + type; messages = [];
-  document.getElementById('chat').innerHTML = '';
-  document.getElementById('chat').style.display = 'flex';
-  document.getElementById('input-area').style.display = 'flex';
+  currentMode='roleplay_'+type;messages=[];
+  document.getElementById('chat').innerHTML='';
+  document.getElementById('chat').style.display='flex';
+  document.getElementById('input-area').style.display='flex';
   document.getElementById('special-section').classList.remove('visible');
-  document.getElementById('special-section').querySelectorAll('[id^="sec-"]').forEach(s => s.style.display='none');
-  addBotMsg(starters[type]);
+  document.getElementById('special-section').querySelectorAll('[id^="sec-"]').forEach(s=>s.style.display='none');
+  addBotMsg(s[type]);
 }
 
-// ── FORMAT TEXT ──
-function formatText(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/❌/g, '<span style="color:#ff6b6b">❌</span>')
-    .replace(/✅/g, '<span style="color:#51cf66">✅</span>')
-    .replace(/\n/g, '<br/>');
+function formatText(t){
+  return t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/❌/g,'<span style="color:#ff6b6b">❌</span>').replace(/✅/g,'<span style="color:#51cf66">✅</span>').replace(/\n/g,'<br/>');
 }
 
-// ── ADD MESSAGES ──
-function addBotMsg(text) {
-  messages.push({ role: 'assistant', content: text });
-  const chat = document.getElementById('chat');
-  const row = document.createElement('div');
-  row.className = 'msg-row';
-  row.innerHTML = `<div class="avatar">🎓</div><div class="bubble bot">${formatText(text)}</div>`;
-  chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
+function addBotMsg(text){
+  messages.push({role:'assistant',content:text});
+  const chat=document.getElementById('chat');
+  const row=document.createElement('div');row.className='msg-row';
+  row.innerHTML=`<div class="avatar">🎓</div><div class="bubble bot">${formatText(text)}</div>`;
+  chat.appendChild(row);chat.scrollTop=chat.scrollHeight;
 }
 
-function addUserMsg(text) {
-  messages.push({ role: 'user', content: text });
-  const chat = document.getElementById('chat');
-  const row = document.createElement('div');
-  row.className = 'msg-row user';
-  row.innerHTML = `<div class="bubble user">${formatText(text)}</div>`;
-  chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
+function addUserMsg(text){
+  messages.push({role:'user',content:text});
+  const chat=document.getElementById('chat');
+  const row=document.createElement('div');row.className='msg-row user';
+  row.innerHTML=`<div class="bubble user">${formatText(text)}</div>`;
+  chat.appendChild(row);chat.scrollTop=chat.scrollHeight;
 }
 
-function showTyping() {
-  const chat = document.getElementById('chat');
-  const row = document.createElement('div');
-  row.className = 'msg-row'; row.id = 'typing-ind';
-  row.innerHTML = `<div class="avatar">🎓</div><div class="bubble bot"><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
-  chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
+function showTyping(){
+  const chat=document.getElementById('chat');
+  const row=document.createElement('div');row.className='msg-row';row.id='typing-ind';
+  row.innerHTML=`<div class="avatar">🎓</div><div class="bubble bot"><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+  chat.appendChild(row);chat.scrollTop=chat.scrollHeight;
 }
+function removeTyping(){const e=document.getElementById('typing-ind');if(e)e.remove();}
 
-function removeTyping() { const e = document.getElementById('typing-ind'); if(e) e.remove(); }
+function saveChatHistory(){userData.chatHistory=messages.slice(-30);saveUserData();}
 
-// ── SEND MESSAGE ──
-async function sendMessage() {
-  const input = document.getElementById('user-input');
-  const userText = input.value.trim();
-  if (!userText) return;
-  input.value = ''; input.style.height = '';
-  addUserMsg(userText);
-  showTyping();
-  document.getElementById('send-btn').disabled = true;
-
-  // update stats
-  userData.msgCount += 1;
-  updateStreak();
-  saveUserData();
-  updateStatsUI();
-
-  try {
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${_k}` },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        max_tokens: 1200, temperature: 0.8,
-        messages: [{ role: 'system', content: buildPrompt(currentMode) }, ...messages]
-      })
+function loadChatHistory(){
+  if(userData.chatHistory&&userData.chatHistory.length>0){
+    messages=userData.chatHistory;
+    const chat=document.getElementById('chat');
+    messages.forEach(m=>{
+      const row=document.createElement('div');
+      if(m.role==='user'){row.className='msg-row user';row.innerHTML=`<div class="bubble user">${formatText(m.content)}</div>`;}
+      else{row.className='msg-row';row.innerHTML=`<div class="avatar">🎓</div><div class="bubble bot">${formatText(m.content)}</div>`;}
+      chat.appendChild(row);
     });
-    const data = await res.json();
-    removeTyping();
-    if (data.error) { addBotMsg('⚠️ Error: ' + data.error.message); return; }
-    const reply = data.choices?.[0]?.message?.content || 'Kuch error aa gaya!';
+    chat.scrollTop=chat.scrollHeight;
+  }
+}
+
+function clearChat(){
+  if(!confirm('Chat clear karein?'))return;
+  messages=[];userData.chatHistory=[];saveUserData();
+  document.getElementById('chat').innerHTML='';
+  startChat(todayWordGlobal);
+}
+
+async function sendMessage(){
+  const input=document.getElementById('user-input');
+  const userText=input.value.trim();
+  if(!userText)return;
+  input.value='';input.style.height='';
+  addUserMsg(userText);showTyping();
+  document.getElementById('send-btn').disabled=true;
+  userData.msgCount+=1;updateStreak();saveUserData();updateStatsUI();
+
+  // show share popup every 10 messages
+  if(userData.msgCount>0&&userData.msgCount%10===0){
+    setTimeout(()=>openSharePopup(),2000);
+  }
+
+  try{
+    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${_k}`},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:1200,temperature:0.8,messages:[{role:'system',content:buildPrompt(currentMode)},...messages]})
+    });
+    const data=await res.json();removeTyping();
+    if(data.error){addBotMsg('⚠️ Error: '+data.error.message);return;}
+    const reply=data.choices?.[0]?.message?.content||'Kuch error aa gaya!';
     addBotMsg(reply);
-
-    // update XP & words
-    userData.wordsLearned += 1;
-    addXP(10);
-    checkBadges();
-    saveChatHistory();
-
-  } catch(err) {
-    removeTyping();
-    addBotMsg('⚠️ Internet check karo aur dobara try karo!');
-  } finally {
-    document.getElementById('send-btn').disabled = false;
+    userData.wordsLearned+=1;addXP(10);checkBadges();saveChatHistory();
+  }catch(err){
+    removeTyping();addBotMsg('⚠️ Internet check karo aur dobara try karo!');
+  }finally{
+    document.getElementById('send-btn').disabled=false;
   }
 }
 
-function shareApp() {
-  const text = encodeURIComponent("🎓 *EnglishSaathi* — Free mein English seekho AI se!\n\nHindi mein poochho, English mein seekho 🚀\n\n👉 https://english-saathi.vercel.app\n\nBilkul FREE hai! Apne dosto ko bhi bhejo! 😊");
-  window.open("https://wa.me/?text=" + text, "_blank");
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
+
+function startChat(w){
+  addBotMsg(`Namaste **${userData.name}**! 🙏 Welcome back to EnglishSaathi!\n\n📅 Aaj ka word: **${w.word}** — ${w.meaning}\n\n💡 Example: ${w.eg}\n\nKya sikhna hai aaj? Poochho kuch bhi! 😊🚀`);
 }
 
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-}
-
-// ── START CHAT ──
-function startChat(todayWord) {
-  const starter = `Namaste **${userData.name}**! 🙏 Welcome to EnglishSaathi!\n\nAapka level **${userData.level}** save ho gaya hai!\n\n📅 Aaj ka word: **${todayWord.word}** — ${todayWord.meaning}\n\nKya sikhna hai aaj? Poochho kuch bhi! 😊🚀`;
-  addBotMsg(starter);
-  addXP(50); // welcome bonus
-  checkBadges();
-}
-
-// ── INIT ──
-window.onload = () => {
+window.onload=()=>{
   loadUserData();
-  const todayWord = setWOTD();
-  isLight = load('theme', false);
-  if (isLight) { document.body.classList.add('light'); document.querySelector('#themeBtn i').className = 'ti ti-moon'; }
-
-  if (userData.name && userData.level) {
-    // returning user
+  const w=setWOTD();
+  isLight=load('theme',false);
+  if(isLight){document.body.classList.add('light');document.querySelector('#themeBtn i').className='ti ti-moon';}
+  if(userData.name&&userData.level){
     document.getElementById('onboarding').classList.add('hidden');
-    document.getElementById('user-greeting').textContent = 'Namaste, ' + userData.name + '! 👋';
-    updateStreak();
-    saveUserData();
-    updateStatsUI();
-    checkBadges();
+    document.getElementById('user-greeting').textContent='Namaste, '+userData.name+'! 👋';
+    updateStreak();saveUserData();updateStatsUI();checkBadges();
     loadChatHistory();
-    if (messages.length === 0) startChat(todayWord);
+    if(messages.length===0)startChat(w);
   }
-  // else onboarding shows automatically
-
-  // auto-resize textarea
-  document.getElementById('user-input').addEventListener('input', function() {
-    this.style.height = 'auto';
-    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-  });
+  document.getElementById('user-input').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
 };
 </script>
 </body>
