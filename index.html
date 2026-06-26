@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EnglishSaathi — AI English Tutor</title>
+  <meta name="description" content="Free AI English tutor for Hindi speakers. Hinglish mein seekho!">
+  <meta name="theme-color" content="#ffd200">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="EnglishSaathi">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -303,6 +311,7 @@
         <div class="stat-label">XP</div>
       </div>
     </div>
+    <button class="icon-btn" id="installBtn" onclick="installPWA()" title="App Install Karo" style="display:none"><i class="ti ti-download"></i></button>
     <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Dark/Light mode"><i class="ti ti-sun"></i></button>
   </div>
 </div>
@@ -408,12 +417,47 @@
   <textarea id="user-input" rows="1" placeholder="Hindi ya English mein likho..." onkeydown="handleKey(event)"></textarea>
   <div class="input-actions">
     <button class="round-btn" id="mic-btn" onclick="toggleMic()" title="Voice input"><i class="ti ti-microphone"></i></button>
+    <button class="round-btn" id="share-btn" onclick="shareApp()" title="WhatsApp pe share karo" style="background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.3);color:#25D366"><i class="ti ti-brand-whatsapp"></i></button>
     <button class="round-btn" id="clear-btn" onclick="clearChat()" title="Clear chat"><i class="ti ti-trash"></i></button>
     <button class="round-btn" id="send-btn" onclick="sendMessage()" title="Send">➤</button>
   </div>
 </div>
 
 <script>
+// ── SERVICE WORKER ──
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js")
+      .then(() => console.log("SW registered"))
+      .catch(e => console.log("SW error:", e));
+  });
+}
+
+// ── PWA INSTALL ──
+let deferredPrompt = null;
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = document.getElementById("installBtn");
+  if (btn) btn.style.display = "flex";
+});
+window.addEventListener("appinstalled", () => {
+  deferredPrompt = null;
+  const btn = document.getElementById("installBtn");
+  if (btn) btn.style.display = "none";
+  showXPPop("🎉 App install ho gaya! +100 XP");
+});
+function installPWA() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(r => {
+    if (r.outcome === "accepted") addXP(100);
+    deferredPrompt = null;
+    const btn = document.getElementById("installBtn");
+    if (btn) btn.style.display = "none";
+  });
+}
+
 // ── GROQ API KEY ──
 const _k = atob(['Z3NrX3lRWEZjZFowYThoWlJ2ZlNpWUZzV0dkeWIzRll','wR25va2VyN2FpcXdvSW9vR2R3NkdzdGg='].join(''));
 
@@ -871,6 +915,11 @@ async function sendMessage() {
   } finally {
     document.getElementById('send-btn').disabled = false;
   }
+}
+
+function shareApp() {
+  const text = encodeURIComponent("🎓 *EnglishSaathi* — Free mein English seekho AI se!\n\nHindi mein poochho, English mein seekho 🚀\n\n👉 https://english-saathi.vercel.app\n\nBilkul FREE hai! Apne dosto ko bhi bhejo! 😊");
+  window.open("https://wa.me/?text=" + text, "_blank");
 }
 
 function handleKey(e) {
