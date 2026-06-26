@@ -1,0 +1,43 @@
+{
+  "name": "EnglishSaathi — AI English Tutor",
+  "short_name": "EnglishSaathi",
+  "description": "AI-powered English tutor for Hindi speakers. Free mein English seekho!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0c29",
+  "theme_color": "#ffd200",
+  "orientation": "portrait",
+  "lang": "hi",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "utilities"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Free Chat",
+      "short_name": "Chat",
+      "description": "AI se English practice karo",
+      "url": "/?mode=chat",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Quiz",
+      "short_name": "Quiz",
+      "description": "English quiz khelo",
+      "url": "/?mode=quiz",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
