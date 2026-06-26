@@ -104,7 +104,8 @@
     .msg-row.user{flex-direction:row-reverse;}
     @keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
     .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f7971e,#ffd200);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-    .bubble{max-width:80%;border-radius:18px 18px 18px 4px;padding:11px 15px;color:#fff;font-size:14px;line-height:1.7;}
+    .bubble{max-width:82%;border-radius:18px 18px 18px 4px;padding:12px 16px;color:#fff;font-size:15px;line-height:1.75;}
+    @media(max-width:480px){.bubble{font-size:15px;padding:12px 15px;}}
     .bubble.bot{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);}
     body.light .bubble.bot{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.1);color:#1a1a35;}
     .bubble.user{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:18px 18px 4px 18px;box-shadow:0 4px 20px rgba(102,126,234,0.4);}
@@ -183,6 +184,10 @@
     /* XP POP */
     .xp-pop{position:fixed;top:68px;right:14px;z-index:50;background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a35;font-weight:700;font-size:13px;padding:7px 14px;border-radius:20px;box-shadow:0 4px 20px rgba(247,151,30,0.5);animation:xpPop 2s ease forwards;pointer-events:none;}
     @keyframes xpPop{0%{opacity:0;transform:translateY(-10px) scale(0.9);}20%{opacity:1;transform:translateY(0) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translateY(-20px);}}
+    @keyframes fadeIn2{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
+    .more-btn{background:rgba(255,255,255,0.05);border-style:dashed;}
+    .more-btn.open{background:rgba(255,210,0,0.1);border-color:rgba(255,210,0,0.4);color:#ffd200;}
+    #hero-strip{display:flex;}
   </style>
 </head>
 <body>
@@ -248,8 +253,8 @@
       </div>
     </div>
     <button class="icon-btn" id="installBtn" onclick="installPWA()" title="App Install Karo" style="display:none"><i class="ti ti-download"></i></button>
-    <button class="icon-btn" onclick="openSharePopup()" title="Dosto ko share karo" style="color:#25D366;border-color:rgba(37,211,102,0.4);background:rgba(37,211,102,0.1)"><i class="ti ti-share"></i></button>
-    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Dark/Light mode"><i class="ti ti-sun"></i></button>
+    <button class="icon-btn" onclick="openSharePopup()" title="Share karo" style="color:#25D366;border-color:rgba(37,211,102,0.4);background:rgba(37,211,102,0.1)"><i class="ti ti-brand-whatsapp"></i></button>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Dark/Light"><i class="ti ti-sun"></i></button>
   </div>
 </div>
 
@@ -280,22 +285,44 @@
   <div class="streak-dots" id="streak-dots"></div>
 </div>
 
+<!-- HERO STRIP -->
+<div id="hero-strip" style="width:100%;max-width:720px;background:linear-gradient(135deg,rgba(127,119,221,0.15),rgba(247,151,30,0.1));border-bottom:1px solid rgba(255,255,255,0.08);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+  <div>
+    <div style="font-size:13px;font-weight:700;color:#fff;">🇮🇳 India ka #1 Free English Tutor</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px;">Hindi mein poochho • AI se seekho • Bilkul FREE</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+    <div style="text-align:center;">
+      <div style="font-size:14px;font-weight:700;color:#ffd200;">50K+</div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.5);">Users</div>
+    </div>
+    <div style="width:1px;height:24px;background:rgba(255,255,255,0.15);"></div>
+    <div style="text-align:center;">
+      <div style="font-size:14px;font-weight:700;color:#1D9E75;">⭐ 4.8</div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.5);">Rating</div>
+    </div>
+  </div>
+</div>
+
 <!-- MODE TABS -->
 <div id="mode-tabs">
-  <button class="mode-btn active" onclick="setMode('chat',this)">💬 Free Chat</button>
+  <button class="mode-btn active" id="tab-chat" onclick="setMode('chat',this)">💬 Free Chat</button>
+  <button class="mode-btn" id="tab-vocab" onclick="setMode('vocab',this)">📝 Vocabulary</button>
+  <button class="mode-btn" id="tab-grammar" onclick="setMode('grammar',this)">✍️ Grammar</button>
+  <button class="mode-btn" id="tab-interview" onclick="setMode('interview',this)">🎯 Interview</button>
+  <button class="mode-btn" id="tab-quiz" onclick="setMode('quiz',this)">🧠 Quiz</button>
+  <button class="mode-btn special" onclick="showSpecial('roleplay',this)">🎭 Roleplay</button>
+  <button class="mode-btn more-btn" id="more-btn" onclick="toggleMoreModes()">⋯ More</button>
+</div>
+<div id="more-modes" style="display:none;width:100%;max-width:720px;display:none;flex-wrap:wrap;gap:5px;padding:0 12px 6px;animation:fadeIn2 0.2s ease;">
   <button class="mode-btn" onclick="setMode('lesson',this)">📚 Lessons</button>
-  <button class="mode-btn" onclick="setMode('vocab',this)">📝 Vocabulary</button>
-  <button class="mode-btn" onclick="setMode('grammar',this)">✍️ Grammar</button>
-  <button class="mode-btn" onclick="setMode('interview',this)">🎯 Interview Prep</button>
   <button class="mode-btn" onclick="setMode('gd',this)">🗣️ GD Practice</button>
   <button class="mode-btn" onclick="setMode('pi',this)">👔 PI Practice</button>
-  <button class="mode-btn" onclick="setMode('spoken',this)">🎤 Spoken English</button>
+  <button class="mode-btn" onclick="setMode('spoken',this)">🎤 Spoken</button>
   <button class="mode-btn" onclick="setMode('email',this)">📧 Email Writing</button>
   <button class="mode-btn" onclick="setMode('pronunciation',this)">🔊 Pronunciation</button>
-  <button class="mode-btn" onclick="setMode('quiz',this)">🧠 Quiz</button>
   <button class="mode-btn special" onclick="showSpecial('progress',this)">📊 Progress</button>
   <button class="mode-btn special" onclick="showSpecial('badges',this)">🏆 Badges</button>
-  <button class="mode-btn special" onclick="showSpecial('roleplay',this)">🎭 Roleplay</button>
 </div>
 
 <!-- CHAT -->
@@ -396,7 +423,7 @@ const WOTD_LIST=[
   {word:'Pragmatic',meaning:'व्यावहारिक सोच रखना',eg:'"Take a pragmatic approach."'},
   {word:'Adaptable',meaning:'हर हाल में ढल जाने वाला',eg:'"Stay adaptable in new situations."'},
   {word:'Courteous',meaning:'विनम्र और शिष्ट',eg:'"Always be courteous to clients."'},
-  {word:'Fluent',meaning:'धाराप्रवाह बोलना',eg:'"She speaks fluent English."'},
+  {word:'Fluent',meaning:'धाराप्रवाह बोलना — बिना रुके बोलना',eg:'"She speaks fluent English."'},
   {word:'Proactive',meaning:'पहले से सोचकर काम करना',eg:'"Be proactive, not reactive."'},
   {word:'Consistent',meaning:'हमेशा एक जैसा अच्छा करते रहना',eg:'"Consistent practice makes you fluent."'}
 ];
@@ -706,6 +733,12 @@ async function sendMessage(){
     const reply=data.choices?.[0]?.message?.content||'Kuch error aa gaya!';
     addBotMsg(reply);
     userData.wordsLearned+=1;addXP(10);checkBadges();saveChatHistory();
+    // CTA nudge after 5th message
+    if(userData.msgCount===5){
+      setTimeout(()=>{
+        addBotMsg('💡 **Tip:** Apne dosto ko bhi English sikhao! EnglishSaathi bilkul FREE hai. WhatsApp pe share karo 👇\n\n👉 https://english-saathi.vercel.app');
+      },1000);
+    }
   }catch(err){
     removeTyping();addBotMsg('⚠️ Internet check karo aur dobara try karo!');
   }finally{
@@ -713,9 +746,20 @@ async function sendMessage(){
   }
 }
 
+function toggleMoreModes(){
+  const el=document.getElementById('more-modes');
+  const btn=document.getElementById('more-btn');
+  const open=el.style.display==='flex';
+  el.style.display=open?'none':'flex';
+  btn.classList.toggle('open',!open);
+  btn.textContent=open?'⋯ More':'✕ Less';
+}
+
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
 
 function startChat(w){
+  // hide hero strip after user is familiar
+  if(userData.msgCount>10){const h=document.getElementById('hero-strip');if(h)h.style.display='none';}
   addBotMsg(`Namaste **${userData.name}**! 🙏 Welcome back to EnglishSaathi!\n\n📅 Aaj ka word: **${w.word}** — ${w.meaning}\n\n💡 Example: ${w.eg}\n\nKya sikhna hai aaj? Poochho kuch bhi! 😊🚀`);
 }
 
